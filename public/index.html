@@ -806,9 +806,9 @@
         SZ.map(([s, l]) => `<div class="demo-sub">${l} (${s})</div><div class="demo-row">${VAR.map(([v, vl]) => mkBtn(v, s, { label: vl, leading: "mail" })).join("")}</div>`).join(""),
         ['(["sm", "md", "lg"] as const).map((size) => (', '  <div key={size} className="flex gap-3">', '    <Button size={size}><Mail /> Primary</Button>', '    <Button size={size} variant="secondary"><Mail /> Secondary</Button>', '    <Button size={size} variant="neutral"><Mail /> Secondary Neutral</Button>', '    <Button size={size} variant="tertiary"><Mail /> Tertiary</Button>', '  </div>', '))}'].join("\n"));
 
-      example("Icon Only", "Icon-only buttons in different sizes and variants. Always include an accessible label. The size / variant is shown under each.",
-        `<div class="demo-row icon-only-row">${[["sm", "primary"], ["md", "secondary"], ["lg", "neutral"], ["md", "tertiary"]].map(([s, v]) => `<div class="state-cell"><span class="state-lbl">${s} / ${v}</span>${mkBtn(v, s, { iconOnly: true, icon: "trash", label: "Delete" })}</div>`).join("")}</div>`,
-        ['<Button size="sm" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="secondary" iconOnly aria-label="Delete"><Trash /></Button>', '<Button size="lg" variant="neutral" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="tertiary" iconOnly aria-label="Delete"><Trash /></Button>'].join("\n"));
+      example("Icon Only", "One icon-only button per variant, at a single size. Always include an accessible label.",
+        `<div class="demo-row icon-only-row">${VAR.map(([v]) => `<div class="state-cell"><span class="state-lbl">${v}</span>${mkBtn(v, "md", { iconOnly: true, icon: "trash", label: "Delete" })}</div>`).join("")}</div>`,
+        ['<Button iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="secondary" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="neutral" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="tertiary" iconOnly aria-label="Delete"><Trash /></Button>'].join("\n"));
 
       // ---- tab + copy interactions ----
       const P = { pnpm: "pnpm dlx", npm: "npx", yarn: "yarn dlx", bun: "bunx" };
