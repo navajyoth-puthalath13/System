@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
  * Depth: at rest the button is raised (shadow-sm on Primary, shadow-xs elsewhere). On
  * press, active:shadow-[--shadow-inner] REPLACES the outer shadow (same box-shadow
  * property) so the button drops to the surface and recesses in — that swap is the "depth".
+ * In dark mode the gray-950 inset vanishes on dark fills, so press uses a stronger black
+ * inset (dark:active:shadow-…) to keep the recess readable across every variant.
  * Primary also reverts its fill/border from action.primary-hover back to action.primary
  * (base) on click; the other variants keep their hover appearance under the shadow.
  * Disabled clears all shadow.
@@ -21,7 +23,7 @@ const buttonVariants = cva(
     "inline-flex items-center justify-center gap-2 whitespace-nowrap select-none",
     "font-medium rounded-[8px] border border-solid transition-[color,background-color,border-color] duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] touch-manipulation [-webkit-tap-highlight-color:transparent]",
     "outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--indigo-600)]",
-    "active:shadow-[var(--shadow-inner)] disabled:pointer-events-none disabled:shadow-none",
+    "active:shadow-[var(--shadow-inner)] dark:active:shadow-[inset_0_2px_12px_rgba(0,0,0,0.55)] disabled:pointer-events-none disabled:shadow-none",
   ],
   {
     variants: {
