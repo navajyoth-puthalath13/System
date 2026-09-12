@@ -1,78 +1,75 @@
-# Design System
+<div align="center">
 
-A **token-first** design system, distributed as a **shadcn registry**. It follows
-the shadcn registry setup so you can install it into any React app — but it ships
-**no components yet**, only colors. Components come later; this is the foundation
-they'll sit on. Zero dependencies (Node for the build, Python 3 for the preview).
+# System
 
-## Two layers
+**A token-first design system, distributed as a shadcn-compatible registry.**
 
-| Layer          | Source                          | What it is                                              |
-| -------------- | ------------------------------- | ------------------------------------------------------- |
-| **Primitives** | `tokens/primitives.tokens.json` | Raw palette — 13 scales (gray, red, sky, …), 50→950.    |
-| **Semantic**   | `tokens/semantic.tokens.json`   | Roles that reference primitives: text, background, border, action, status. |
+[![Documentation](https://img.shields.io/badge/Documentation-system--three--rouge.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://system-three-rouge.vercel.app)
+&nbsp;[![Registry](https://img.shields.io/badge/shadcn-registry-111827?style=flat-square)](https://system-three-rouge.vercel.app)
+&nbsp;[![License](https://img.shields.io/badge/License-MIT-16A34A?style=flat-square)](LICENSE)
 
-Semantic tokens never hard-code a hex — they point at a primitive
-(`--action-primary: var(--sky-600)`), so re-theming means re-pointing.
-Your primary is **`action-primary` → `sky-600` (#0084D1)**.
+</div>
 
-## Layout
+---
 
-```
-tokens/                  # SOURCE OF TRUTH — your two Figma token files
-registry.json            # shadcn registry manifest (lists the "tokens" item)
-scripts/build.mjs        # resolves semantic -> primitive, emits everything below
-dist/
-  variables.css          # all CSS custom properties  ← import directly if not using shadcn
-  tokens.resolved.json   # flat, resolved values
-public/                  # the served site (docs page + installable registry)
-  index.html             # color documentation page
-  data.js                # generated
-  r/tokens.json          # THE INSTALLABLE ITEM — a shadcn registry item (cssVars)
-  r/registry.json        # the registry index
-```
+System defines colour, typography, icons, spacing, and elevation **once** as design tokens,
+then consumes them everywhere through CSS variables — so the visual language stays consistent
+from design to production, and re-theming means re-pointing tokens, not editing components.
 
-## Build & preview
+## 🔗 Links
 
-```bash
-npm run build            # regenerate everything from tokens/
-npm run serve            # build, then serve public/ at http://localhost:5178
-```
+- **[Documentation](https://system-three-rouge.vercel.app)** — the live, browsable showcase
+- **[Installation](#installation)** — add it to a React + Tailwind app
+- **[Specs](docs/)** — written docs, per foundation and component
 
-The page has the browsable palette (click a swatch to copy its CSS variable) and
-the install command.
+## What's inside
 
-## Install into a React app (shadcn registry)
+**Foundations** — Colour (semantic roles over 13 primitive ramps) · Typography (one Inter
+scale) · Icons (Lucide, 16 → 48) · Spacing (4px base) · Elevation (shadow ladder).
 
-Your registry serves a real shadcn item at `/r/tokens.json`, so any shadcn project
-can pull the tokens:
+**Components** — Button (`src/components/ui/button.tsx`): four variants, three sizes,
+icon-only, and full interaction states (hover, focus, pressed, disabled).
+
+## Installation
+
+Add the Button (with its token dependencies) to any React + Tailwind app:
 
 ```bash
-npx shadcn@latest add http://localhost:5178/r/tokens.json
+npx shadcn@latest add https://system-three-rouge.vercel.app/registry/button.json
 ```
 
-That drops all the color CSS variables into the app's theme. Then build components
-against them: `background: var(--action-primary)`, `color: var(--text-dark-950)`, etc.
+Tokens only:
 
-To install by name, register the namespace in the consuming app's `components.json`:
-
-```json
-{ "registries": { "@ds": "http://localhost:5178/r/{name}.json" } }
-```
 ```bash
-npx shadcn@latest add @ds/tokens
+npx shadcn@latest add https://system-three-rouge.vercel.app/registry/tokens.json
 ```
 
-> Not using shadcn? Skip all of the above and `@import "./dist/variables.css";` —
-> same variables, no tooling.
+> Not using shadcn? `@import "./src/index.css";` and use the CSS variables directly.
 
-## Update the colors
+## Development
 
-1. Edit in Figma → re-export → replace the files in `tokens/`.
-2. `npm run build`. The registry item, the stylesheet, and the docs all regenerate.
+```bash
+npm install
+npm run tokens     # regenerate src/index.css + showcase data from tokens/
+npm run build      # tokens → validate → generate the registry into public/registry/
+npm run serve      # serve the documentation showcase locally
+```
 
-## Adding components later
+The JSON in `tokens/` is the **source of truth** — `src/index.css`, the showcase data, and the
+registry items are all generated from it. Never edit them by hand.
 
-When you're ready, add component items to `registry.json` (`type: registry:ui`),
-point them at source files under a `registry/` folder, and extend `scripts/build.mjs`
-to copy those files into `public/r/<name>.json`. The color foundation stays as-is.
+## Project layout
+
+```
+tokens/            design tokens — the source of truth
+src/
+  index.css        generated CSS variables (@theme + primitive/semantic tiers)
+  components/ui/    components (button.tsx)
+docs/              written specs, per foundation and component
+scripts/           token build + registry generation and validation
+public/            documentation showcase + generated registry items
+```
+
+## License
+
+[MIT](LICENSE)
