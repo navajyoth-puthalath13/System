@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <title>Colors — System</title>
+  <script src="./data.js"></script>
+  <script src="./type.js"></script>
+  <script src="./shadow.js"></script>
+  <script src="./spacing.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff; --panel: #ffffff; --panel-2: #f7f7f8; --preview: #f4f4f5;
+      --fg: #0a0a0a; --muted: #6b7280; --faint: #9ca3af;
+      --border: #e5e7eb; --border-strong: #d4d4d8;
+      --accent: #0084D1; --accent-fg: #0084D1;
+      --accent-soft: rgba(0,132,209,.10); --accent-border: rgba(0,132,209,.45);
+      /* semantic icon tokens (from the design system's `icon` group) */
+      --icon-dark-950: #030712; --icon-sub-700: #364153; --icon-soft-600: #4A5565; --icon-disabled-400: #99A1AF;
+      /* action + text + border tokens (for component demos) */
+      --action-primary: #0084D1; --action-primary-hover: #0069A8; --action-primary-soft: #DFF2FE;
+      --text-primary: #030712; --text-secondary: #364153; --text-disabled: #99A1AF; --text-inverse: #ffffff;
+      --border-strong: #99A1AF; --ds-indigo-600: #4F39F6; --background-light: #F3F4F6; --background-muted: #F9FAFB;
+      --shadow-inner: inset 0px 2px 10px 0px rgba(3, 7, 18, 0.18);
+      --shadow-xs: 0px 1px 2px 0px rgba(3, 7, 18, 0.10); --shadow-sm: 0px 2px 4px -1px rgba(3, 7, 18, 0.08);
+      --radius: 12px; --sidebar-w: 264px; --topbar-h: 60px;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    }
+    html[data-theme="dark"] {
+      --bg: #0a0a0a; --panel: #141414; --panel-2: #171717; --preview: #1c1c1c;
+      --fg: #fafafa; --muted: #a1a1aa; --faint: #71717a;
+      --border: #262626; --border-strong: #333333;
+      --accent: #38bdf8; --accent-fg: #7dd3fc;
+      --accent-soft: rgba(56,189,248,.12); --accent-border: rgba(56,189,248,.42);
+      /* icon tokens — derived dark (mirrors src/index.css) */
+      --icon-dark-950: #F9FAFB; --icon-sub-700: #D1D5DC; --icon-soft-600: #99A1AF; --icon-disabled-400: #4A5565;
+      --action-primary: #00A6F4; --action-primary-hover: #0084D1; --action-primary-soft: #052F4A;
+      --text-primary: #F9FAFB; --text-secondary: #D1D5DC; --text-disabled: #4A5565; --text-inverse: #030712;
+      --border-strong: #4A5565; --background-light: #101828; --background-muted: #101828;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.006em; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
+
+    /* lucide icons — colored via the semantic `icon` tokens */
+    .lic { display: inline-block; vertical-align: middle; width: 16px; height: 16px; flex: none; }
+    .iconbtn .lic { width: 18px; height: 18px; }
+    .crumb .sep { display: inline-flex; align-items: center; }
+    .crumb .sep .lic { width: 15px; height: 15px; }
+    .search .box .ico { display: inline-flex; color: var(--icon-soft-600); }
+    .chip .ic { display: inline-flex; color: var(--icon-disabled-400); }
+    .chip .ic .lic { width: 12px; height: 12px; }
+    .cp { display: inline-flex; align-items: center; gap: 5px; }
+    .cp .lic { width: 14px; height: 14px; }
+
+    /* ---------------- sidebar ---------------- */
+    aside {
+      position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
+      background: var(--bg); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; z-index: 50; transition: transform .22s ease;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; padding: 24px 16px 16px; font-size: 21px; font-weight: 600; letter-spacing: -0.03em; }
+    .logo svg { width: 28px; height: 28px; flex: none; color: var(--fg); }
+    .search { margin: 2px 16px 10px; }
+    .search .box { display: flex; align-items: center; gap: 8px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; padding: 8px 10px; }
+    .search input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--fg); font: 400 13px var(--sans); }
+    .search input::placeholder { color: var(--faint); }
+    .search .kbd { font: 500 11px var(--mono); color: var(--faint); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; }
+    nav { flex: 1; overflow-y: auto; padding: 6px 12px 24px; }
+    nav .grp { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: none; color: var(--faint); padding: 16px 10px 6px; }
+    nav a { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted); padding: 8px 12px; border-radius: 8px; transition: .12s; position: relative; }
+    nav a:hover { color: var(--fg); background: var(--panel-2); }
+    nav a.active { color: var(--accent-fg); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); font-weight: 500; }
+    nav a .sw { width: 11px; height: 11px; border-radius: 3px; border: 1px solid rgba(128,128,128,.4); flex: none; }
+    nav a.current { color: var(--fg); background: var(--panel-2); }
+    nav a.disabled { color: var(--faint); opacity: .6; pointer-events: none; font-style: normal; }
+    nav a.disabled .tag { margin-left: auto; font: 500 10px var(--mono); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; }
+
+    /* ---------------- top bar ---------------- */
+    .topbar {
+      position: sticky; top: 0; height: var(--topbar-h); z-index: 40;
+      display: flex; align-items: center; gap: 14px; padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(12px) saturate(180%);
+    }
+    .iconbtn { cursor: pointer; width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--border); background: var(--panel); color: var(--icon-sub-700); display: grid; place-items: center; font-size: 15px; }
+    .iconbtn:hover { color: var(--icon-dark-950); }
+    .iconbtn:hover { background: var(--panel-2); }
+    .crumb { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--muted); }
+    .crumb a:hover { color: var(--fg); }
+    .crumb .sep { color: var(--icon-disabled-400); }
+    .crumb .cur { color: var(--fg); }
+    .topbar .spacer { flex: 1; }
+
+    /* ---------------- layout ---------------- */
+    .main-wrap { margin-left: var(--sidebar-w); transition: margin-left .22s ease; }
+    body.collapsed aside { transform: translateX(-100%); }
+    body.collapsed .main-wrap { margin-left: 0; }
+    main { max-width: 940px; margin: 0 auto; padding: 40px 40px 80px; }
+    @media (max-width: 860px) {
+      aside { transform: translateX(-100%); }
+      .main-wrap { margin-left: 0; }
+      body.nav-open aside { transform: translateX(0); }
+      main { padding: 32px 24px 64px; }
+    }
+
+    .eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: .12em; color: var(--faint); text-transform: uppercase; margin-bottom: 12px; }
+    h1.title { font-size: 40px; font-weight: 700; letter-spacing: -0.035em; margin: 0 0 18px; }
+    .lead { font-size: 19px; line-height: 1.55; color: var(--muted); max-width: 620px; margin: 0 0 30px; letter-spacing: -0.01em; }
+    .lead b { color: var(--fg); font-weight: 600; }
+
+    /* foundations stat panel */
+    .panel { border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden; margin: 0 0 16px; }
+    .panel .cell { padding: 16px 24px; border-right: 1px solid var(--border); }
+    .panel .cell:last-child { border-right: 0; }
+    .panel .k { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin-bottom: 7px; }
+    .panel .v { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+    .panel .v small { display: block; font: 400 12px var(--mono); color: var(--muted); margin-top: 4px; letter-spacing: 0; }
+
+    /* install block */
+    .install { margin: 0 0 40px; }
+    .install .cap { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .cmd { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .cmd code { flex: 1; font: 400 13px var(--mono); color: var(--fg); overflow-x: auto; white-space: nowrap; }
+    .cmd code .c { color: var(--accent-fg); }
+    .cmd .cp { cursor: pointer; border: 1px solid var(--border); background: var(--panel-2); color: var(--muted); border-radius: 7px; padding: 5px 10px; font: 500 12px var(--sans); }
+    .cmd .cp:hover { color: var(--fg); }
+
+    /* section */
+    section.block { padding-top: 40px; scroll-margin-top: 76px; }
+    .block > h2 { font-size: 24px; font-weight: 650; letter-spacing: -0.025em; margin: 0 0 5px; }
+    .block > .sub { font-size: 14.5px; color: var(--muted); margin: 0 0 24px; max-width: 560px; }
+
+    /* semantic cards (CareUI-style) */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 16px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+    .card .preview { height: 84px; display: flex; align-items: flex-start; padding: 12px 14px; position: relative; }
+    .card .preview .aa { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+    .card .body { padding: 13px 15px 15px; }
+    .card .nm { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 7px; padding: 5px 8px; font: 500 11.5px var(--mono); color: var(--fg); cursor: pointer; margin: 0 6px 6px 0; max-width: 100%; }
+    .chip:hover { border-color: var(--border-strong); }
+    .chip .ic { color: var(--icon-disabled-400); }
+    .chip.val .dot { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(128,128,128,.35); flex: none; }
+    .card .ref { font: 400 11.5px var(--mono); color: var(--muted); margin-top: 6px; }
+    .card .purpose { font-size: 11.5px; line-height: 1.45; color: var(--faint); margin-top: 8px; }
+
+    /* primitive scales */
+    .scale { margin-bottom: 22px; }
+    .scale .fam { font-size: 13.5px; font-weight: 600; text-transform: capitalize; margin-bottom: 9px; letter-spacing: -0.01em; }
+    .steps { display: grid; grid-template-columns: repeat(11, 1fr); gap: 8px; }
+    .step { cursor: pointer; }
+    .step .sw { height: 54px; border-radius: 9px; border: 1px solid rgba(128,128,128,.16); transition: transform .1s; }
+    .step:hover .sw { transform: scale(1.05); }
+    .step .lb { font: 500 10.5px var(--mono); text-align: center; margin-top: 6px; }
+    .step .hx2 { font: 400 9.5px var(--mono); color: var(--faint); text-align: center; }
+    @media (max-width: 620px) { .steps { grid-template-columns: repeat(6, 1fr); } }
+
+    .empty { color: var(--muted); padding: 30px 0; font-size: 14px; }
+    /* written documentation */
+    .doc { max-width: 760px; }
+    .doc h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; margin: 32px 0 8px; }
+    .doc p { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0 0 12px; }
+    .doc p b { color: var(--fg); font-weight: 600; }
+    .doc code { font: 400 12.5px var(--mono); background: var(--panel-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; color: var(--fg); }
+    .doc .arch { display: flex; align-items: center; gap: 12px; margin: 6px 0 18px; flex-wrap: wrap; }
+    .doc .arch .node { font: 500 13px var(--mono); border: 1px solid var(--border); background: var(--panel); border-radius: 8px; padding: 8px 14px; }
+    .doc .arch .arw { color: var(--faint); }
+    .doc .dims { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 6px 0 18px; }
+    .doc .dim { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--panel); }
+    .doc .dim b { font-size: 13.5px; }
+    .doc .dim span { display: block; font-size: 12px; color: var(--faint); margin: 2px 0 8px; }
+    .doc .dim code { display: inline-block; font-size: 11px; padding: 2px 6px; }
+    .doc-table { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 13.5px; }
+    .doc-table th { text-align: left; font-weight: 600; color: var(--fg); border-bottom: 1px solid var(--border-strong); padding: 8px 12px; }
+    .doc-table th em { font-style: normal; font-weight: 400; color: var(--muted); }
+    .doc-table td { border-bottom: 1px solid var(--border); padding: 8px 12px; color: var(--muted); vertical-align: top; }
+    .checklist { list-style: none; padding: 0; margin: 6px 0 16px; display: grid; gap: 7px; }
+    .checklist li { position: relative; padding-left: 26px; font-size: 14px; color: var(--muted); line-height: 1.5; }
+    .checklist li::before { content: "✓"; position: absolute; left: 6px; color: var(--accent); font-weight: 700; }
+    .doc .avoid { border-left: 3px solid var(--border-strong); padding-left: 14px; color: var(--muted); font-size: 13.5px; }
+
+    /* typography showcase */
+    .ty-h { font-size: 13px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 40px 0 14px; font-weight: 600; }
+    .ty-weights { display: flex; flex-wrap: wrap; gap: 12px; }
+    .ty-weight { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; background: var(--panel); min-width: 116px; }
+    .ty-weight .ag { font-size: 30px; line-height: 1; letter-spacing: -.02em; color: var(--fg); font-family: var(--sans); }
+    .ty-weight .lbl { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+    .ty-weight .lbl b { color: var(--fg); font-weight: 600; }
+    .ty-item { padding: 22px 0; border-bottom: 1px solid var(--border); }
+    .ty-item .head { display: flex; align-items: baseline; gap: 24px; }
+    .ty-item .sample { flex: 1; min-width: 0; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -.02em; }
+    .ty-item .meta { flex: none; text-align: right; }
+    .ty-item .meta .nm { font: 600 13.5px var(--sans); }
+    .ty-item .meta .vals { font: 400 11.5px var(--mono); color: var(--muted); margin-top: 3px; }
+    .ty-item .meta .tok { font: 400 11px var(--mono); color: var(--faint); margin-top: 2px; }
+    .guide { margin-top: 14px; display: grid; gap: 9px; max-width: 660px; }
+    .guide .use { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+    .guide .use b { color: var(--fg); font-weight: 600; }
+    .ty-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ty-chip { font: 400 12px var(--sans); color: var(--muted); background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 9px; }
+    .ty-avoid { font-size: 12.5px; color: var(--muted); border-left: 2px solid var(--border-strong); padding-left: 10px; }
+    .ty-avoid b { color: var(--fg); font-weight: 600; }
+    .para-guide { margin: 4px 0 6px; }
+
+    .ty-para { border: 1px solid var(--border); border-radius: 14px; padding: 4px 18px 10px; margin-bottom: 14px; background: var(--panel); }
+    .ty-para .para-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0 4px; gap: 12px; }
+    .ty-para .para-head .nm { font: 600 15px var(--sans); }
+    .ty-para .para-head .vals { font: 400 11.5px var(--mono); color: var(--muted); }
+    .ty-para .para-head .tok { color: var(--faint); }
+    .ty-line { display: flex; align-items: baseline; gap: 16px; padding: 11px 0; border-top: 1px solid var(--border); }
+    .ty-line .txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--fg); }
+    .ty-line .wlbl { flex: none; font: 400 11.5px var(--mono); color: var(--muted); width: 84px; text-align: right; }
+
+    /* ---------------- Button component ---------------- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; font-family: var(--sans); font-weight: 500; border: 1px solid transparent; border-radius: 8px; cursor: pointer; white-space: nowrap; box-sizing: border-box; transition: color .15s cubic-bezier(.4,0,.2,1), background-color .15s cubic-bezier(.4,0,.2,1), border-color .15s cubic-bezier(.4,0,.2,1); touch-action: manipulation; -webkit-tap-highlight-color: transparent; outline: none; }
+    /* pressed / clicked — recess with the inner shadow (no scale) */
+    .btn:active:not(:disabled), .btn.is-active { box-shadow: var(--shadow-inner); }
+    .btn:disabled, .btn.is-disabled { box-shadow: none; }
+    .btn-sm { height: 32px; padding: 0 12px; font-size: 14px; line-height: 16px; gap: 6px; }
+    .btn-md { height: 40px; padding: 0 16px; font-size: 14px; line-height: 16px; gap: 8px; }
+    .btn-lg { height: 48px; padding: 0 24px; font-size: 16px; line-height: 18px; gap: 8px; }
+    .btn-sm svg, .btn-md svg { width: 16px; height: 16px; flex: none; }
+    .btn-lg svg { width: 20px; height: 20px; flex: none; }
+    .btn-icon.btn-sm { width: 32px; padding: 0; }
+    .btn-icon.btn-md { width: 40px; padding: 0; }
+    .btn-icon.btn-lg { width: 48px; padding: 0; }
+    /* variants */
+    .btn-primary { background: var(--action-primary); border-color: var(--action-primary); color: var(--text-inverse); box-shadow: var(--shadow-sm); }
+    .btn-primary:hover:not(:disabled), .btn-primary.is-hover { background: var(--action-primary-hover); border-color: var(--action-primary-hover); }
+    .btn-primary:disabled, .btn-primary.is-disabled { background: var(--action-primary-soft); border-color: var(--action-primary-soft); color: var(--text-inverse); cursor: default; }
+    /* pressed / clicked — Primary reverts from hover back to the base primary fill (+ inner shadow) */
+    .btn-primary:active:not(:disabled), .btn-primary.is-active { background: var(--action-primary); border-color: var(--action-primary); }
+    .btn-secondary { background: transparent; border-color: var(--action-primary); color: var(--action-primary); box-shadow: var(--shadow-xs); }
+    .btn-secondary:hover:not(:disabled), .btn-secondary.is-hover { background: var(--action-primary-soft); }
+    .btn-secondary:disabled, .btn-secondary.is-disabled { border-color: var(--text-disabled); color: var(--text-disabled); cursor: default; }
+    .btn-neutral { background: transparent; border-color: var(--border-strong); color: var(--text-primary); box-shadow: var(--shadow-xs); }
+    .btn-neutral:hover:not(:disabled), .btn-neutral.is-hover { background: var(--background-light); }
+    .btn-neutral:disabled, .btn-neutral.is-disabled { border-color: var(--text-disabled); color: var(--text-disabled); cursor: default; }
+    .btn-tertiary { background: var(--background-muted); border-color: transparent; color: var(--text-primary); box-shadow: var(--shadow-xs); }
+    .btn-tertiary:hover:not(:disabled), .btn-tertiary.is-hover { background: var(--background-light); border-color: var(--background-light); }
+    .btn-tertiary:disabled, .btn-tertiary.is-disabled { color: var(--text-disabled); cursor: default; }
+    /* focus ring — indigo-600, 2px, 4px offset */
+    .btn:focus-visible, .btn.is-focus { outline: 2px solid var(--ds-indigo-600); outline-offset: 4px; }
+
+    /* component demo panels */
+    .demo-panel { border: 1px solid var(--border); border-radius: 14px; background: var(--panel); padding: 24px; }
+    .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .demo-sub { font: 500 12.5px var(--sans); color: var(--muted); margin: 24px 0 8px; }
+    .demo-sub:first-child { margin-top: 0; }
+    .state-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+    .state-lbl { font: 400 11px var(--mono); color: var(--faint); }
+    /* icon-only: top-align cells so the size/variant labels line up, buttons hang below */
+    .demo-row.icon-only-row { align-items: flex-start; gap: 32px; }
+    /* examples: consistent spacing between blocks (block padding handles the gap) */
+    .ex-block > .ty-h { margin-top: 0; }
+
+    /* spacing scale — visual bars */
+    .sp-scale { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 24px; }
+    .sp-row { display: flex; align-items: center; gap: 16px; }
+    .sp-step { flex: none; width: 34px; text-align: right; font: 500 12px var(--mono); color: var(--muted); }
+    .sp-track { flex: 1; height: 18px; display: flex; align-items: center; }
+    .sp-bar { height: 18px; border-radius: 5px; background: var(--accent-soft); border: 1px solid var(--accent-border); min-width: 3px; }
+    .sp-px { flex: none; width: 44px; font: 400 12px var(--mono); color: var(--faint); }
+    /* shadow showcase — theme-aware surfaces + 1px border for definition (shadow reads via
+       elevation + border, so it holds up on the dark page instead of clashing white tiles) */
+    .shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 16px; }
+    .shadow-tile { background: var(--panel-2); border: 1px solid var(--border); border-radius: 14px; padding: 32px 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .shadow-box { width: 100%; height: 60px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+    .shadow-meta { text-align: center; width: 100%; }
+    .shadow-meta .nm { font: 500 12.5px var(--mono); color: var(--fg); }
+    .shadow-meta .pv { font: 400 11px var(--sans); color: var(--muted); margin-top: 5px; }
+    .sh-uses { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 11px; }
+    .sh-use { font: 500 10.5px var(--sans); color: var(--muted); background: var(--panel); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; }
+    .sh-val { display: inline-block; margin-top: 11px; font: 500 10.5px var(--mono); color: var(--muted); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; cursor: pointer; }
+    .sh-val:hover { color: var(--fg); border-color: var(--border-strong); }
+    /* elevation comparison stage — one surface with all levels in a row */
+    .shadow-stage { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 16px; padding: 48px 32px 32px; }
+    .stage-col { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .stage-box { display: flex; align-items: center; justify-content: center; width: 92px; height: 66px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; font: 500 12px var(--mono); color: var(--faint); }
+    .stage-lbl { font: 500 11.5px var(--mono); color: var(--fg); }
+    .stage-elv { font: 400 10.5px var(--sans); color: var(--faint); margin-top: -6px; }
+
+    /* component docs — Preview/Code + Installation */
+    .pc { margin-bottom: 0; }
+    .pc-tabs, .pm-tabs { display: inline-flex; gap: 2px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; padding: 3px; margin-bottom: 12px; }
+    .pc-tab, .pm-tab { cursor: pointer; border: 1px solid transparent; background: transparent; color: var(--muted); font: 500 13px var(--sans); padding: 5px 12px; border-radius: 7px; transition: background .12s, border-color .12s, color .12s; }
+    .pc-tab.active, .pm-tab.active { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent-fg); }
+    .pc-body { border: 1px solid var(--border); border-radius: 14px; background: var(--panel); overflow: hidden; }
+    .pc-preview { padding: 24px; }
+    /* code panes — always dark, syntax-highlighted */
+    .pc-code, .pc-standalone { background: #0d1117; }
+    .pc-code pre, .pc-standalone pre { margin: 0; padding: 18px 20px; overflow-x: auto; }
+    .pc-code code, .pc-standalone code { font: 400 13px/1.7 var(--mono); color: #d4d4d4; white-space: pre; }
+    .c-kw { color: #c586c0; }
+    .c-str { color: #9ece6a; }
+    .c-tag { color: #e5c07b; }
+    .c-id { color: #d4d4d4; }
+    .pc-standalone { position: relative; }
+    .code-copy { position: absolute; top: 12px; right: 12px; color: #8b949e; }
+    .code-copy:hover { color: #fff; background: rgba(255,255,255,.08); }
+    #view-button .title { margin-bottom: 6px; }
+    .btn-desc { font-size: 16px; color: var(--muted); line-height: 1.5; margin: 0 0 32px; }
+    .bt-sec > h2 { font-size: 22px; font-weight: 650; letter-spacing: -0.025em; margin: 0 0 12px; }
+    .pm-cmd { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .pm-cmd code { flex: 1; font: 400 13px var(--mono); color: var(--fg); overflow-x: auto; white-space: nowrap; }
+    .pm-copy { cursor: pointer; border: 0; background: transparent; color: var(--muted); display: inline-flex; padding: 5px; border-radius: 6px; }
+    .pm-copy:hover { color: var(--fg); background: var(--panel-2); }
+    .pm-copy .lic { width: 15px; height: 15px; }
+
+    /* source showcase (Figma / references) — its own full-height tab */
+    #view-source { padding: 0; }
+    .showcase { display: flex; flex-direction: column; max-width: none; margin: 0; height: calc(100vh - var(--topbar-h)); min-height: 0; border: 0; border-radius: 0; overflow: hidden; background: var(--panel); }
+    .source-head { display: flex; align-items: center; gap: 11px; padding: 13px 16px; border-bottom: 1px solid var(--border); flex: none; }
+    .source-head .figmark { height: 22px; width: auto; flex: none; }
+    .source-head .t { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+    .source-head .sub2 { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .source-head a { margin-left: auto; font-size: 13px; color: var(--accent-fg); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .source-head a:hover { text-decoration: underline; }
+    .figma-full { flex: 1; width: 100%; border: 0; background: var(--panel-2); }
+    .source-head .notionmark { width: 22px; height: 22px; border-radius: 5px; background: var(--fg); color: var(--bg); display: grid; place-items: center; font: 700 13px var(--sans); flex: none; }
+    .embed-fallback { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 13px; text-align: center; padding: 40px; background: var(--panel-2); }
+    .embed-fallback .ef-mark { width: 46px; height: 46px; border-radius: 11px; background: var(--fg); color: var(--bg); display: grid; place-items: center; font: 700 24px var(--sans); }
+    .embed-fallback .ef-title { font-size: 18px; font-weight: 600; }
+    .embed-fallback .ef-desc { font-size: 13.5px; color: var(--muted); max-width: 440px; line-height: 1.6; }
+    .embed-fallback .ef-desc code { font-family: var(--mono); background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; font-size: 12px; }
+    .embed-fallback .ef-btn { margin-top: 4px; background: var(--accent); color: #fff; padding: 9px 16px; border-radius: 9px; font-size: 13.5px; font-weight: 500; text-decoration: none; }
+    /* Notion — native render */
+    .notion-body { flex: 1; overflow-y: auto; padding: 34px 32px 40px; }
+    .nx-head { max-width: 760px; margin: 0 auto 26px; }
+    .nx-emoji-lg { font-size: 40px; line-height: 1; }
+    .nx-title { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; margin: 14px 0 8px; }
+    .nx-desc { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 620px; }
+    .nx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 14px; max-width: 760px; margin: 0 auto; }
+    .nx-card { display: block; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); padding: 18px; text-decoration: none; color: inherit; transition: border-color .12s; }
+    .nx-card:hover { border-color: var(--border-strong); }
+    .nx-card .emoji { font-size: 24px; line-height: 1; }
+    .nx-card .nm { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-top: 11px; color: var(--fg); }
+    .nx-links { display: flex; gap: 14px; margin-top: 13px; font: 400 12.5px var(--sans); }
+    .nx-links span, .nx-links a { color: var(--accent-fg); text-decoration: none; }
+    .nx-links a:hover { text-decoration: underline; }
+    @media (max-width: 860px) { .showcase { height: calc(100vh - var(--topbar-h)); } }
+
+    footer { border-top: 1px solid var(--border); margin-top: 60px; padding: 22px 0 0; font-size: 13px; color: var(--muted); }
+    footer code { font-family: var(--mono); }
+
+    .toast { position: fixed; bottom: 24px; left: calc(50% + var(--sidebar-w) / 2); transform: translateX(-50%) translateY(16px); background: var(--fg); color: var(--bg); padding: 8px 15px; border-radius: 8px; font: 500 13px var(--sans); opacity: 0; pointer-events: none; transition: .18s; z-index: 70; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    body.collapsed .toast { left: 50%; }
+  </style>
+</head>
+<body>
+  <aside>
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" stroke="currentColor" stroke-width="1.4" opacity="0.45"/>
+        <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+          <line x1="20" y1="16" x2="26.5" y2="16"/>
+          <line x1="18.83" y1="18.83" x2="23.42" y2="23.42"/>
+          <line x1="16" y1="20" x2="16" y2="26.5"/>
+          <line x1="13.17" y1="18.83" x2="8.58" y2="23.42"/>
+          <line x1="12" y1="16" x2="5.5" y2="16"/>
+          <line x1="13.17" y1="13.17" x2="8.58" y2="8.58"/>
+          <line x1="16" y1="12" x2="16" y2="5.5"/>
+          <line x1="18.83" y1="13.17" x2="23.42" y2="8.58"/>
+        </g>
+      </svg>
+      System
+    </div>
+    <div class="search"><div class="box">
+      <span class="ico"><svg class="lic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+      <input id="search" placeholder="Search tokens…" autocomplete="off" />
+      <span class="kbd">⌘K</span>
+    </div></div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="topbar">
+      <button class="iconbtn" id="sidebtn" title="Toggle sidebar"><svg class="lic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></button>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="toggle" title="Toggle theme"></button>
+    </div>
+
+    <main id="view-colors">
+      <div class="eyebrow">Documentation</div>
+      <h1 class="title">Colors</h1>
+      <p class="lead">Two layers. <b>Primitives</b> are the raw palette — thirteen scales from 50 to 950. <b>Semantic</b> tokens give those colors a job so every surface, text and border resolves through a token. Click any swatch or chip to copy.</p>
+
+      <div class="panel">
+        <div class="cell"><div class="k">Base palette</div><div class="v" id="p-scales">13 scales<small>tokens/primitives</small></div></div>
+        <div class="cell"><div class="k">Semantic roles</div><div class="v" id="p-sem">9 groups<small>text · bg · border · action · status</small></div></div>
+        <div class="cell"><div class="k">Primary</div><div class="v">action-primary<small>→ sky-600 · #0084D1</small></div></div>
+      </div>
+
+      <div class="install">
+        <div class="cap">Install into a React + Tailwind app — shadcn registry</div>
+        <div class="cmd">
+          <code id="cmd"><span class="c">npx shadcn@latest add</span> http://localhost:5178/registry/tokens.json</code>
+          <button class="cp" id="copycmd"><svg class="lic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy</button>
+        </div>
+      </div>
+
+      <div id="content"></div>
+
+      <section class="doc block" id="system">
+        <h2>How the system works</h2>
+        <p class="sub">The written model behind the swatches above. Read this to know <em>which</em> token to reach for and <em>why</em>.</p>
+
+        <h3>Two-tier architecture</h3>
+        <div class="arch">
+          <span class="node">Primitive</span><span class="arw">↓</span>
+          <span class="node">Semantic</span><span class="arw">↓</span>
+          <span class="node">Component</span>
+        </div>
+        <p><b>Primitive</b> is <em>what the value is</em> (<code>gray/950</code>). <b>Semantic</b> is <em>what it means / where it's used</em> (<code>text.primary</code>). Components consume the semantic token, never the raw primitive — so a primitive can change (<code>text.primary → gray/900</code>) without touching a single component.</p>
+
+        <h3>Naming dimensions</h3>
+        <p>A semantic name can describe up to four things. Read a name as <code>context.role</code> — sometimes with emphasis or state.</p>
+        <div class="dims">
+          <div class="dim"><b>Context</b><span>where it's used</span><code>text · icon · background · border · action</code></div>
+          <div class="dim"><b>Meaning</b><span>what it communicates</span><code>information · warning · negative · positive</code></div>
+          <div class="dim"><b>Emphasis</b><span>how strongly</span><code>primary · secondary · muted · disabled</code></div>
+          <div class="dim"><b>State</b><span>what's happening</span><code>hover · clicked · disabled</code></div>
+        </div>
+
+        <h3>Choosing a token</h3>
+        <p>Don't start with “which shade?” Start with “what is this color doing?”</p>
+        <table class="doc-table">
+          <thead><tr><th>Designing…</th><th>Ask…</th><th>Reach for</th></tr></thead>
+          <tbody>
+            <tr><td>Text</td><td>How important is this content?</td><td><code>text.*</code></td></tr>
+            <tr><td>Icon</td><td>How important is this icon?</td><td><code>icon.*</code></td></tr>
+            <tr><td>Surface</td><td>What kind of surface is this?</td><td><code>background.*</code></td></tr>
+            <tr><td>Interactive control</td><td>What action / state is occurring?</td><td><code>action.*</code></td></tr>
+            <tr><td>Boundary</td><td>What does the boundary separate?</td><td><code>border.*</code></td></tr>
+            <tr><td>Success / warning / error / info</td><td>What is it communicating?</td><td><code>positive · warning · negative · information</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>When to add a new token</h3>
+        <ul class="checklist">
+          <li>It represents a real UI role.</li>
+          <li>It communicates meaning, emphasis, purpose, or state.</li>
+          <li>Its purpose can be explained without a hex value.</li>
+          <li>The name stays meaningful if the primitive changes.</li>
+          <li>The interface actually needs it.</li>
+          <li>You're defining a role — not reproducing the palette.</li>
+        </ul>
+        <p class="avoid">Avoid minting <code>information/50…950</code> just because those shades exist. Prefer <code>information.text</code>, <code>information.icon</code>, <code>information.border</code> — purpose-driven, not scale-driven.</p>
+
+        <h3>Primitive vs semantic</h3>
+        <table class="doc-table">
+          <thead><tr><th>Primitive — <em>what value is this?</em></th><th>Semantic — <em>why am I using it here?</em></th></tr></thead>
+          <tbody>
+            <tr><td><code>gray/950</code></td><td><code>text.primary</code></td></tr>
+            <tr><td><code>blue/500</code></td><td><code>information.icon</code></td></tr>
+            <tr><td><code>green/200</code></td><td><code>positive.border</code></td></tr>
+            <tr><td><code>sky/600</code></td><td><code>action.primary</code></td></tr>
+            <tr><td><code>white</code></td><td><code>text.inverse</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Registry principle</h3>
+        <p>In the token registry the semantic layer stays independent of the primitive layer. Dots flatten to CSS variables — <code>text.primary</code> becomes <code>--text-primary</code>, <code>warning.border-strong</code> becomes <code>--warning-border-strong</code>. A component uses <code>var(--text-primary)</code>, so the primitive underneath can evolve without a component-by-component rewrite.</p>
+      </section>
+
+      <footer>Source of truth: <code>tokens/primitives.tokens.json</code> + <code>tokens/semantic.json</code> · rebuild with <code>npm run tokens</code>. Generated documentation.</footer>
+    </main>
+
+    <main id="view-typography" hidden>
+      <div class="eyebrow">Documentation</div>
+      <h1 class="title">Typography</h1>
+      <p class="lead">One unified scale in <b>Inter</b> — six headings and four paragraph sizes, with five weights. Each value shows as <b>size / line-height</b>. Sizes come from the Figma variables; the presets derive from the tokens.</p>
+
+      <div class="panel">
+        <div class="cell"><div class="k">Font</div><div class="v">Inter<small>--font-sans</small></div></div>
+        <div class="cell"><div class="k">Scale</div><div class="v">10 levels<small>H1–H6 · Paragraph LG/MD/SM/SMX</small></div></div>
+        <div class="cell"><div class="k">Weights</div><div class="v">5<small>Light → Bold</small></div></div>
+      </div>
+
+      <div id="type-content"></div>
+
+      <footer>Source of truth: <code>tokens/typography.json</code> · rebuild with <code>npm run tokens</code>. Generated documentation.</footer>
+    </main>
+
+    <main id="view-foundation" hidden>
+      <div class="eyebrow">Documentation</div>
+      <h1 class="title">Foundation</h1>
+      <p class="btn-desc">The primitive scales the whole system builds on — spacing and elevation today, with corner radius and more to follow. Every value is sourced from the tokens, never invented.</p>
+
+      <section class="block">
+        <h2>Spacing</h2>
+        <p class="sub">Uses Tailwind v4's default base unit <code>--spacing: 0.25rem</code> (4px) — not overridden. Every <code>p-*</code>, <code>m-*</code>, <code>gap-*</code>, and <code>space-*</code> utility is a multiple of that base. The steps below are the ones actually used across the system.</p>
+        <div id="spacing-content"></div>
+      </section>
+
+      <section class="block">
+        <h2>Shadow</h2>
+        <p class="sub">Elevation and inset effects that communicate depth and interaction — black with controlled opacity, not a gray palette.</p>
+        <div class="panel">
+          <div class="cell"><div class="k">Levels</div><div class="v">5 + 1<small>xs–xl · inner</small></div></div>
+          <div class="cell"><div class="k">Color</div><div class="v">Black<small>opacity 8–15%</small></div></div>
+          <div class="cell"><div class="k">Light source</div><div class="v">X = 0<small>Y increases with elevation</small></div></div>
+        </div>
+        <div id="shadow-content"></div>
+      </section>
+
+      <footer>Source of truth: <code>tokens/spacing.json</code> + <code>tokens/shadows.json</code> · guidance in <code>docs/spacing.md</code> and <code>docs/shadows.md</code>. Rebuild with <code>npm run tokens</code>.</footer>
+    </main>
+
+    <main id="view-button" hidden>
+      <div class="eyebrow">Components / Atoms</div>
+      <h1 class="title">Button</h1>
+      <p class="btn-desc">Buttons allow users to perform an action or make a decision.</p>
+
+      <div id="button-content"></div>
+
+      <footer>Source: <code>src/components/ui/button.tsx</code> · install <code>npx shadcn@latest add http://localhost:5178/registry/button.json</code>.</footer>
+    </main>
+
+    <section id="view-source" hidden>
+      <div class="showcase">
+        <div class="source-head">
+          <svg class="figmark" viewBox="0 0 38 57" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/>
+            <path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/>
+            <path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/>
+            <path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/>
+            <path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/>
+          </svg>
+          <div>
+            <div class="t">System</div>
+            <div class="sub2">Figma · variables &amp; tokens — built from scratch</div>
+          </div>
+          <a href="https://www.figma.com/design/qSlpEHLcdCCuPOFc4cErkX/Q1-Design-system?node-id=0-1" target="_blank" rel="noopener">Open in Figma ↗</a>
+        </div>
+        <iframe class="figma-full" title="System — Figma" loading="lazy" allowfullscreen
+          src="https://embed.figma.com/design/qSlpEHLcdCCuPOFc4cErkX/Q1-Design-system?node-id=0-1&embed-host=share"></iframe>
+      </div>
+    </section>
+
+    <section id="view-notion" hidden>
+      <div class="showcase">
+        <div class="source-head">
+          <span class="notionmark">N</span>
+          <div>
+            <div class="t">System</div>
+            <div class="sub2">Notion · documentation — rendered natively</div>
+          </div>
+          <a href="https://fine-wholesaler-22e.notion.site/design-system-3d209d893fa2802eac00e7debe0278eb" target="_blank" rel="noopener">Open in Notion ↗</a>
+        </div>
+        <div class="notion-body">
+          <div class="nx-head">
+            <div class="nx-emoji-lg">🪟</div>
+            <h2 class="nx-title">design system</h2>
+            <p class="nx-desc">Design system documentation — the pages from Notion, rendered here in the app (Notion can't be embedded, so this mirrors its structure and links out).</p>
+          </div>
+          <div class="nx-grid">
+            <a class="nx-card" href="https://fine-wholesaler-22e.notion.site/Color-System-Semantic-Tokens-3d709d893fa2802885fee9e2ef677eb9" target="_blank" rel="noopener">
+              <div class="emoji">🪢</div><div class="nm">Color System — Semantic Tokens</div>
+              <div class="nx-links"><span>Notion ↗</span><a href="#" onclick="location.hash='';return false;">In app → Colors</a></div>
+            </a>
+            <a class="nx-card" href="https://fine-wholesaler-22e.notion.site/Typography-3d809d893fa2802190a9d7ce07942bea" target="_blank" rel="noopener">
+              <div class="emoji">⌨️</div><div class="nm">Typography</div>
+              <div class="nx-links"><span>Notion ↗</span><a href="#typography">In app → Typography</a></div>
+            </a>
+            <a class="nx-card" href="https://fine-wholesaler-22e.notion.site/Button-3d809d893fa280c5946fe85a7114a17d" target="_blank" rel="noopener">
+              <div class="emoji">🔘</div><div class="nm">Button</div>
+              <div class="nx-links"><span>Notion ↗</span><a href="#button">In app → Button</a></div>
+            </a>
+            <a class="nx-card" href="https://fine-wholesaler-22e.notion.site/Color-3d709d893fa280d1a04fd8fa2eadcdd0" target="_blank" rel="noopener">
+              <div class="emoji">🎨</div><div class="nm">Color</div>
+              <div class="nx-links"><span>Notion ↗</span><a href="#">In app → Colors</a></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast">Copied</div>
+
+  <script>
+    const DS = window.DS || { semanticGroups: [], primitiveScales: [] };
+    const el = (h) => { const t = document.createElement("template"); t.innerHTML = h.trim(); return t.content.firstChild; };
+
+
+    const GROUP_META = {
+      text:        { title: "Text", desc: "Text emphasis and availability — a semantic hierarchy, not a shade scale." },
+      icon:        { title: "Icon", desc: "Icon emphasis and availability. Shares primitives with Text, but stays a separate role." },
+      background:  { title: "Background", desc: "Surface purpose — the role of a surface, not its shade." },
+      border:      { title: "Border", desc: "Boundaries and separation, weakest to strongest." },
+      action:      { title: "Action", desc: "Interaction and state — the primary action, its hover, and a soft treatment." },
+      information: { title: "Information", desc: "Informational meaning, by role (text / icon / border / surface / background)." },
+      warning:     { title: "Warning", desc: "Caution, by role — text, icon, borders, surface, background." },
+      negative:    { title: "Negative", desc: "Errors and destructive conditions, by role." },
+      positive:    { title: "Positive", desc: "Success and confirmed conditions, by role." },
+    };
+    const ORDER = ["text","icon","background","border","action","information","warning","negative","positive"];
+
+    // lucide icons (inlined SVG, MIT)
+    const svg = (paths) => `<svg class="lic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+    const ICONS = {
+      copy: svg(`<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>`),
+      check: svg(`<path d="M20 6 9 17l-5-5"/>`),
+      sun: svg(`<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`),
+      moon: svg(`<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>`),
+    };
+
+    // contrast: pick black/white text for a hex background
+    const readable = (hex) => {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "");
+      if (!m) return "#0a0a0a";
+      const [r,g,b] = [1,2,3].map(i => parseInt(m[i],16)/255).map(c => c<=.03928 ? c/12.92 : ((c+.055)/1.055)**2.4);
+      const L = .2126*r + .7152*g + .0722*b;
+      return L > .45 ? "#0a0a0a" : "#ffffff";
+    };
+
+    // toast + copy
+    let tt; const toast = (m) => { const t = document.getElementById("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 1300); };
+    const copy = (txt, label) => navigator.clipboard?.writeText(txt).then(() => toast(label), () => toast("Copy failed"));
+    document.getElementById("copycmd").onclick = () => copy(document.getElementById("cmd").textContent.trim(), "Command copied");
+
+    const content = document.getElementById("content");
+    const nav = document.getElementById("nav");
+
+    // Point any hardcoded install URLs at the current origin, so the shown command is
+    // correct on localhost AND on the deployed domain (e.g. Vercel).
+    document.querySelectorAll("code, footer").forEach((el) => {
+      if (el.innerHTML.includes("localhost:5178")) el.innerHTML = el.innerHTML.replaceAll("http://localhost:5178", location.origin);
+    });
+
+    // ---- Source group (above Documentation) ----
+    nav.appendChild(el(`<div class="grp">Source</div>`));
+    const figmaLink = el(`<a href="#figma">Figma</a>`);
+    nav.appendChild(figmaLink);
+    const notionLink = el(`<a href="#notion">Notion</a>`);
+    nav.appendChild(notionLink);
+
+    // ---- Documentation group ----
+    nav.appendChild(el(`<div class="grp">Documentation</div>`));
+    const colorsLink = el(`<a href="#" class="active">Colors</a>`);
+    nav.appendChild(colorsLink);
+    const typeLink = el(`<a href="#typography">Typography</a>`);
+    nav.appendChild(typeLink);
+    const foundationLink = el(`<a href="#foundation">Foundation</a>`);
+    nav.appendChild(foundationLink);
+
+    // ---- view switching (Colors / Typography / Foundation / Figma tabs) ----
+    const views = { colors: document.getElementById("view-colors"), typography: document.getElementById("view-typography"), foundation: document.getElementById("view-foundation"), figma: document.getElementById("view-source"), notion: document.getElementById("view-notion") };
+    const vlinks = { colors: colorsLink, typography: typeLink, foundation: foundationLink, figma: figmaLink, notion: notionLink };
+    function showView(name) {
+      if (!views[name]) name = "colors";
+      for (const k in views) views[k].hidden = k !== name;
+      for (const k in vlinks) vlinks[k].classList.toggle("active", k === name);
+      history.replaceState(null, "", name === "colors" ? "#" : "#" + name);
+      window.scrollTo(0, 0);
+    }
+    colorsLink.addEventListener("click", (e) => { e.preventDefault(); showView("colors"); });
+    typeLink.addEventListener("click", (e) => { e.preventDefault(); showView("typography"); });
+    foundationLink.addEventListener("click", (e) => { e.preventDefault(); showView("foundation"); });
+    figmaLink.addEventListener("click", (e) => { e.preventDefault(); showView("figma"); });
+    notionLink.addEventListener("click", (e) => { e.preventDefault(); showView("notion"); });
+    window.addEventListener("hashchange", () => showView(location.hash.slice(1) || "colors"));
+    showView(location.hash.slice(1) || "colors");
+
+    const ordered = [...DS.semanticGroups].sort((a, b) => (ORDER.indexOf(a.group)<0?99:ORDER.indexOf(a.group)) - (ORDER.indexOf(b.group)<0?99:ORDER.indexOf(b.group)));
+    for (const g of ordered) {
+      const meta = GROUP_META[g.group] || { title: g.group, desc: "" };
+      const id = "sem-" + g.group;
+      const sec = el(`<section class="block" id="${id}"><h2>${meta.title}</h2><p class="sub">${meta.desc}</p><div class="cards"></div></section>`);
+      const grid = sec.querySelector(".cards");
+      for (const t of g.tokens) {
+        const fg = readable(t.hex);
+        const card = el(`
+          <div class="card" data-q="${(t.name+' '+t.var+' '+t.hex).toLowerCase()}">
+            <div class="preview" style="background:${t.hex}"><span class="aa" style="color:${fg}">Aa</span></div>
+            <div class="body">
+              <div class="nm">${t.name}</div>
+              <span class="chip var" data-copy="var(--${t.var})"><span class="dot" style="background:${t.hex}"></span>--${t.var} <span class="ic">${ICONS.copy}</span></span>
+              <span class="chip" data-copy="${t.hex}">${t.hex} <span class="ic">${ICONS.copy}</span></span>
+              <div class="ref">→ --${t.refVar}</div>
+              ${t.purpose ? `<div class="purpose">${t.purpose}</div>` : ""}
+            </div>
+          </div>`);
+        grid.appendChild(card);
+      }
+      content.appendChild(sec);
+    }
+
+    // ---- Primitives (content only; not listed in the sidebar) ----
+    const psec = el(`<section class="block" id="primitives"><h2>Primitives</h2><p class="sub">The raw palette. Semantic tokens reference these — you rarely use them directly.</p></section>`);
+    for (const s of DS.primitiveScales) {
+      const scale = el(`<div class="scale" data-fam="${s.family}"><div class="fam">${s.family}</div><div class="steps"></div></div>`);
+      const row = scale.querySelector(".steps");
+      for (const st of s.steps) {
+        const step = el(`<div class="step" data-q="${(s.family+'-'+st.step+' '+st.var+' '+st.hex).toLowerCase()}" data-copy="var(--${st.var})">
+          <div class="sw" style="background:${st.hex}"></div>
+          <div class="lb">${st.step}</div>
+          <div class="hx2">${st.hex.replace('#','')}</div>
+        </div>`);
+        row.appendChild(step);
+      }
+      psec.appendChild(scale);
+    }
+    content.appendChild(psec);
+
+    // ---- Components / Atoms group ----
+    nav.appendChild(el(`<div class="grp">Components / Atoms</div>`));
+    const buttonLink = el(`<a href="#button">Button</a>`);
+    nav.appendChild(buttonLink);
+    views.button = document.getElementById("view-button");
+    vlinks.button = buttonLink;
+    buttonLink.addEventListener("click", (e) => { e.preventDefault(); showView("button"); });
+
+    // ---- Button showcase ----
+    const LI = {
+      mail: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+      plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+      chevronRight: '<path d="m9 18 6-6-6-6"/>',
+      trash: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/>',
+    };
+    const licon = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LI[n] || ""}</svg>`;
+    const mkBtn = (variant, size, o = {}) => {
+      const cls = ["btn", "btn-" + size, "btn-" + variant];
+      if (o.iconOnly) cls.push("btn-icon");
+      if (o.state === "hover") cls.push("is-hover");
+      if (o.state === "focus") cls.push("is-focus");
+      if (o.state === "pressed") cls.push("is-hover", "is-active");
+      const dis = o.state === "disabled" ? " disabled" : "";
+      let inner = "";
+      if (o.iconOnly) inner = licon(o.icon || "plus");
+      else {
+        if (o.leading) inner += licon(o.leading);
+        inner += `<span>${o.label || "Button"}</span>`;
+        if (o.trailing) inner += licon(o.trailing);
+      }
+      const aria = o.iconOnly ? ` aria-label="${o.label || "Action"}"` : "";
+      return `<button class="${cls.join(" ")}"${dis}${aria}>${inner}</button>`;
+    };
+    const bc = document.getElementById("button-content");
+    if (bc) {
+      const VAR = [["primary", "Primary"], ["secondary", "Secondary"], ["neutral", "Secondary Neutral"], ["tertiary", "Tertiary"]];
+      const SZ = [["sm", "Small"], ["md", "Medium"], ["lg", "Large"]];
+      const REG_URL = location.origin + "/registry/button.json";
+      const hl = (code) => code.replace(
+        /("[^"]*")|(<\/?[A-Za-z][\w.-]*|\/?>)|(\b(?:import|from|export|default|function|return|const|let|var|new)\b)|([A-Za-z_$][\w$]*)/g,
+        (m, str, tag, kw, id) => {
+          const e = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          if (str) return `<span class="c-str">${e(str)}</span>`;
+          if (tag) return `<span class="c-tag">${e(tag)}</span>`;
+          if (kw) return `<span class="c-kw">${kw}</span>`;
+          if (id) return `<span class="c-id">${id}</span>`;
+          return e(m);
+        }
+      );
+
+      // ---- Preview / Code hero (variants) ----
+      const heroPreview = `<div class="demo-row">${VAR.map(([v, l]) => mkBtn(v, "md", { label: l })).join("")}</div>`;
+      const heroCode = hl([
+        '<Button>Primary</Button>',
+        '<Button variant="secondary">Secondary</Button>',
+        '<Button variant="neutral">Secondary Neutral</Button>',
+        '<Button variant="tertiary">Tertiary</Button>',
+      ].join("\n"));
+      bc.appendChild(el(`<div class="pc">
+        <div class="pc-tabs"><button class="pc-tab active" data-pc="preview">Preview</button><button class="pc-tab" data-pc="code">Code</button></div>
+        <div class="pc-body"><div class="pc-preview">${heroPreview}</div><div class="pc-code" hidden><pre><code>${heroCode}</code></pre></div></div>
+      </div>`));
+
+      // ---- Installation ----
+      bc.appendChild(el(`<section class="block bt-sec"><h2>Installation</h2>
+        <div class="pm">
+          <div class="pm-tabs"><button class="pm-tab active" data-pm="pnpm">pnpm</button><button class="pm-tab" data-pm="npm">npm</button><button class="pm-tab" data-pm="yarn">yarn</button><button class="pm-tab" data-pm="bun">bun</button></div>
+          <div class="pm-cmd"><code>pnpm dlx shadcn@latest add ${REG_URL}</code><button class="pm-copy" title="Copy">${ICONS.copy}</button></div>
+        </div></section>`));
+
+      // ---- Usage ----
+      const usage = hl(`import { Button } from "@/components/ui/button";\n\nexport function Demo() {\n  return <Button>Click me</Button>;\n}`);
+      bc.appendChild(el(`<section class="block bt-sec"><h2>Usage</h2><div class="pc-body pc-standalone"><button class="pm-copy code-copy" title="Copy">${ICONS.copy}</button><pre><code>${usage}</code></pre></div></section>`));
+
+      // ---- Examples (each with its own Preview / Code tabs) ----
+      bc.appendChild(el(`<section class="block bt-sec"><h2>Examples</h2></section>`));
+      const example = (title, desc, previewHtml, codeStr) => bc.appendChild(el(`<section class="block ex-block"><h3 class="ty-h">${title}</h3>${desc ? `<p class="sub">${desc}</p>` : ""}<div class="pc"><div class="pc-tabs"><button class="pc-tab active" data-pc="preview">Preview</button><button class="pc-tab" data-pc="code">Code</button></div><div class="pc-body"><div class="pc-preview">${previewHtml}</div><div class="pc-code" hidden><pre><code>${hl(codeStr)}</code></pre></div></div></div></section>`));
+
+      example("Sizes", "Small, Medium, and Large. Medium is the default.",
+        `<div class="demo-row">${SZ.map(([s, l]) => mkBtn("primary", s, { label: l })).join("")}</div>`,
+        ['<Button size="sm">Small</Button>', '<Button>Medium</Button>', '<Button size="lg">Large</Button>'].join("\n"));
+
+      example("With Icons", "Buttons with icons on the left or right side.",
+        `<div class="demo-row">${mkBtn("primary", "md", { label: "Login with Email", leading: "mail" })}${mkBtn("secondary", "md", { label: "Add Item", leading: "plus" })}${mkBtn("neutral", "md", { label: "Continue", trailing: "chevronRight" })}${mkBtn("primary", "md", { iconOnly: true, icon: "plus", label: "Add" })}</div>`,
+        ['<Button><Mail /> Login with Email</Button>', '<Button variant="secondary"><Plus /> Add Item</Button>', '<Button variant="neutral">Continue <ChevronRight /></Button>', '<Button iconOnly aria-label="Add"><Plus /></Button>'].join("\n"));
+
+      example("All Variants with Icons", "All button variants with icons across the three sizes.",
+        SZ.map(([s, l]) => `<div class="demo-sub">${l} (${s})</div><div class="demo-row">${VAR.map(([v, vl]) => mkBtn(v, s, { label: vl, leading: "mail" })).join("")}</div>`).join(""),
+        ['(["sm", "md", "lg"] as const).map((size) => (', '  <div key={size} className="flex gap-3">', '    <Button size={size}><Mail /> Primary</Button>', '    <Button size={size} variant="secondary"><Mail /> Secondary</Button>', '    <Button size={size} variant="neutral"><Mail /> Secondary Neutral</Button>', '    <Button size={size} variant="tertiary"><Mail /> Tertiary</Button>', '  </div>', '))}'].join("\n"));
+
+      example("Icon Only", "Icon-only buttons in different sizes and variants. Always include an accessible label. The size / variant is shown under each.",
+        `<div class="demo-row icon-only-row">${[["sm", "primary"], ["md", "secondary"], ["lg", "neutral"], ["md", "tertiary"]].map(([s, v]) => `<div class="state-cell"><span class="state-lbl">${s} / ${v}</span>${mkBtn(v, s, { iconOnly: true, icon: "trash", label: "Delete" })}</div>`).join("")}</div>`,
+        ['<Button size="sm" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="secondary" iconOnly aria-label="Delete"><Trash /></Button>', '<Button size="lg" variant="neutral" iconOnly aria-label="Delete"><Trash /></Button>', '<Button variant="tertiary" iconOnly aria-label="Delete"><Trash /></Button>'].join("\n"));
+
+      // ---- tab + copy interactions ----
+      const P = { pnpm: "pnpm dlx", npm: "npx", yarn: "yarn dlx", bun: "bunx" };
+      bc.addEventListener("click", (e) => {
+        const pcTab = e.target.closest(".pc-tab");
+        if (pcTab) { const pc = pcTab.closest(".pc"); pc.querySelectorAll(".pc-tab").forEach((x) => x.classList.toggle("active", x === pcTab)); const w = pcTab.dataset.pc; pc.querySelector(".pc-preview").hidden = w !== "preview"; pc.querySelector(".pc-code").hidden = w !== "code"; return; }
+        const pmTab = e.target.closest(".pm-tab");
+        if (pmTab) { const pm = pmTab.closest(".pm"); pm.querySelectorAll(".pm-tab").forEach((x) => x.classList.toggle("active", x === pmTab)); pm.querySelector("code").textContent = `${P[pmTab.dataset.pm]} shadcn@latest add ${REG_URL}`; return; }
+        const cp = e.target.closest(".pm-copy");
+        if (cp) { const code = cp.parentElement.querySelector("code"); if (code) copy(code.textContent.trim(), "Copied"); }
+      });
+    }
+    showView(location.hash.slice(1) || "colors");
+
+    // ---- Typography showcase (reads window.TYPE) ----
+    const TYPE = window.TYPE || { weights: [], headings: [], paragraphs: [] };
+    const typeRoot = document.getElementById("type-content");
+    const wName = (k) => (TYPE.weights.find((w) => w.key === k) || {}).name || k;
+    const chips = (arr) => (arr || []).map((x) => `<span class="ty-chip">${x}</span>`).join("");
+    if (typeRoot && TYPE.headings.length) {
+      // weights
+      const wSec = el(`<section class="block"><h3 class="ty-h">Weights</h3><div class="ty-weights"></div></section>`);
+      const wRow = wSec.querySelector(".ty-weights");
+      for (const w of TYPE.weights) wRow.appendChild(el(`<div class="ty-weight"><div class="ag" style="font-weight:${w.value}">Ag</div><div class="lbl"><b>${w.name}</b> · ${w.value}</div></div>`));
+      typeRoot.appendChild(wSec);
+      // headings
+      const hSec = el(`<section class="block"><h3 class="ty-h">Headings</h3></section>`);
+      for (const h of TYPE.headings) {
+        hSec.appendChild(el(`<div class="ty-item">
+          <div class="head">
+            <div class="sample" style="font-family:var(--sans);font-size:${h.size}px;line-height:${h.line}px;font-weight:${h.weightValue}">Heading ${h.key.slice(1)}</div>
+            <div class="meta"><div class="nm">${h.name}</div><div class="vals">${h.size} / ${h.line} · ${wName(h.weight)}</div><div class="tok">--text-${h.key}</div></div>
+          </div>
+          <div class="guide">
+            <div class="use"><b>${h.role || ""}</b> — ${h.use || ""}</div>
+            <div class="ty-chips">${chips(h.for)}</div>
+            ${h.avoid ? `<div class="ty-avoid"><b>Don't use for</b> — ${h.avoid}</div>` : ""}
+          </div>
+        </div>`));
+      }
+      typeRoot.appendChild(hSec);
+      // paragraphs
+      const pSec = el(`<section class="block"><h3 class="ty-h">Paragraph</h3></section>`);
+      for (const p of TYPE.paragraphs) {
+        const card = el(`<div class="ty-para">
+          <div class="para-head"><span class="nm">${p.name}</span><span class="vals">${p.size} / ${p.line} · <span class="tok">--text-paragraph-${p.key}</span></span></div>
+          <div class="guide para-guide">
+            <div class="use"><b>${p.role || ""}</b> — ${p.use || ""}</div>
+            <div class="ty-chips">${chips(p.for)}</div>
+          </div>
+        </div>`);
+        for (const w of p.weights) {
+          card.appendChild(el(`<div class="ty-line"><div class="txt" style="font-family:var(--sans);font-size:${p.size}px;line-height:${p.line}px;font-weight:${w.value}">The quick brown fox jumps over the lazy dog</div><div class="wlbl">${w.name}</div></div>`));
+        }
+        pSec.appendChild(card);
+      }
+      typeRoot.appendChild(pSec);
+    }
+
+    // ---- Spacing showcase (reads window.SPACING) ----
+    const spRoot = document.getElementById("spacing-content");
+    const SP = window.SPACING || { steps: [] };
+    if (spRoot && SP.steps.length) {
+      const maxPx = Math.max(...SP.steps.map((s) => s.px));
+      const bars = SP.steps.filter((s) => s.px > 0).map((s) => `<div class="sp-row"><div class="sp-step">${s.step}</div><div class="sp-track"><div class="sp-bar" style="width:${(s.px / maxPx) * 100}%"></div></div><div class="sp-px">${s.px}px</div></div>`).join("");
+      spRoot.appendChild(el(`<div class="sp-scale">${bars}</div>`));
+      const rows = SP.steps.map((s) => `<tr><td><code>${s.step}</code></td><td>${s.rem}</td><td>${s.px}</td><td><code>${s.classes}</code></td><td>${s.usage}</td></tr>`).join("");
+      spRoot.appendChild(el(`<div style="overflow-x:auto"><table class="doc-table"><thead><tr><th>Step</th><th>rem</th><th>px</th><th>Common classes</th><th>Usage</th></tr></thead><tbody>${rows}</tbody></table></div>`));
+    }
+
+    // ---- Shadow showcase (reads window.SHADOWS) ----
+    const shRoot = document.getElementById("shadow-content");
+    const SH = window.SHADOWS || { shadows: [] };
+    if (shRoot && SH.shadows.length) {
+      const shPanel = (title, desc, inner) => shRoot.appendChild(el(`<section class="block"><h3 class="ty-h">${title}</h3>${desc ? `<p class="sub">${desc}</p>` : ""}${inner}</section>`));
+      const chips = (s) => (s.use || []).map((u) => `<span class="sh-use">${u}</span>`).join("");
+      const tile = (s) => `<div class="shadow-tile"><div class="shadow-box" style="box-shadow:${s.value}"></div><div class="shadow-meta"><div class="nm">shadow-${s.name}</div><div class="pv">${s.purpose}</div><div class="sh-uses">${chips(s)}</div><code class="sh-val" data-copy="shadow-${s.name}" title="Copy token">shadow-${s.name}</code></div></div>`;
+      const outer = SH.shadows.filter((s) => !s.inset);
+      const inset = SH.shadows.filter((s) => s.inset);
+
+      // Comparison stage — all elevations side by side so the progression is obvious
+      const stageBox = (s, i) => `<div class="stage-col"><div class="stage-box" style="box-shadow:${s.value}">${s.name}</div><div class="stage-lbl">shadow-${s.name}</div><div class="stage-elv">level ${i + 1}</div></div>`;
+      shPanel("Elevation progression", "The same surface at each level, lowest to highest. Higher elevation = larger vertical offset and softer blur, so the surface reads as further from the background.", `<div class="shadow-stage">${outer.map(stageBox).join("")}</div>`);
+
+      shPanel("What each level is for", "Pick the token by how far the element floats above the surface — not by its size. Each card lists where it is typically used.", `<div class="shadow-grid">${outer.map(tile).join("")}</div>`);
+      shPanel("Inset", "shadow-inner — pressed / recessed. The shadow sits inside the element boundary rather than under it.", `<div class="shadow-grid">${inset.map(tile).join("")}</div>`);
+      const rows = SH.shadows.map((s) => `<tr><td><code>shadow-${s.name}</code></td><td>${s.x}</td><td>${s.y}</td><td>${s.blur}</td><td>${s.spread}</td><td>${Math.round(s.opacity * 100)}%</td><td>${s.purpose}</td></tr>`).join("");
+      shPanel("Properties", "Offset (X / Y), blur, spread, and black opacity per token.", `<div style="overflow-x:auto"><table class="doc-table"><thead><tr><th>Token</th><th>X</th><th>Y</th><th>Blur</th><th>Spread</th><th>Opacity</th><th>Purpose</th></tr></thead><tbody>${rows}</tbody></table></div>`);
+    }
+
+    // ---- copy delegation ----
+    document.addEventListener("click", (e) => {
+      const c = e.target.closest("[data-copy]");
+      if (!c) return;
+      const v = c.dataset.copy;
+      copy(v, `Copied ${v}`);
+    });
+
+    // ---- search filter ----
+    const search = document.getElementById("search");
+    search.addEventListener("input", () => {
+      const q = search.value.trim().toLowerCase();
+      // semantic cards
+      document.querySelectorAll("section[id^='sem-']").forEach((sec) => {
+        let any = false;
+        sec.querySelectorAll(".card").forEach((c) => {
+          const hit = !q || c.dataset.q.includes(q);
+          c.style.display = hit ? "" : "none"; if (hit) any = true;
+        });
+        sec.style.display = any ? "" : "none";
+      });
+      // primitive steps
+      let primAny = false;
+      document.querySelectorAll("#primitives .scale").forEach((sc) => {
+        let any = false;
+        sc.querySelectorAll(".step").forEach((st) => {
+          const hit = !q || st.dataset.q.includes(q);
+          st.style.display = hit ? "" : "none"; if (hit) any = true;
+        });
+        sc.style.display = any ? "" : "none"; if (any) primAny = true;
+      });
+      document.getElementById("primitives").style.display = primAny ? "" : "none";
+    });
+    document.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); search.focus(); }
+    });
+
+    // ---- scrollspy: highlight the current color section (Colors stays active) ----
+    const subLinks = [...nav.querySelectorAll("a.seclink")];
+    const byId = Object.fromEntries(subLinks.map((a) => [a.getAttribute("href").slice(1), a]));
+    const spy = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) {
+        subLinks.forEach((l) => l.classList.remove("current"));
+        byId[e.target.id]?.classList.add("current");
+      }
+    }, { rootMargin: "-70px 0px -72% 0px" });
+    document.querySelectorAll("section.block").forEach((s) => spy.observe(s));
+
+    // ---- sidebar + theme toggles ----
+    const body = document.body;
+    document.getElementById("sidebtn").onclick = () => {
+      if (window.matchMedia("(max-width: 860px)").matches) body.classList.toggle("nav-open");
+      else body.classList.toggle("collapsed");
+    };
+    const html = document.documentElement;
+    const saved = localStorage.getItem("ds-theme"); if (saved) html.dataset.theme = saved;
+    const sync = () => document.getElementById("toggle").innerHTML = html.dataset.theme === "dark" ? ICONS.sun : ICONS.moon; sync();
+    document.getElementById("toggle").onclick = () => { html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark"; localStorage.setItem("ds-theme", html.dataset.theme); sync(); };
+  </script>
+</body>
+</html>

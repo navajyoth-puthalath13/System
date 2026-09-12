@@ -1,0 +1,12 @@
+{
+  "name": "design-system",
+  "homepage": "http://localhost:5178",
+  "items": [
+    {
+      "name": "tokens",
+      "type": "registry:theme",
+      "title": "Design Tokens",
+      "description": "Primitive + semantic color tokens as CSS variables. Primitives are raw scales; semantic tokens (text, background, border, action, status) reference them. Install this, then build components on top."
+    }
+  ]
+}

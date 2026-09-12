@@ -1,0 +1,20 @@
+{
+  "$comment": "Spacing scale. Uses Tailwind v4's default base unit --spacing: 0.25rem (4px); it is NOT overridden. Every p-*, m-*, gap-*, and space-* utility is a multiple of that base. These are the steps actually used across the system. Usage notes describe this system, not Care UI.",
+  "base": "0.25rem",
+  "basePx": 4,
+  "steps": [
+    { "step": "0",   "rem": "0",     "px": 0,  "classes": "p-0 / m-0 / gap-0",   "usage": "Reset — remove spacing." },
+    { "step": "0.5", "rem": "0.125", "px": 2,  "classes": "p-0.5 / gap-0.5",     "usage": "Hairline insets, dense icon padding." },
+    { "step": "1",   "rem": "0.25",  "px": 4,  "classes": "p-1 / gap-1",         "usage": "Tight icon gaps, chip padding." },
+    { "step": "1.5", "rem": "0.375", "px": 6,  "classes": "p-1.5 / gap-1.5",     "usage": "Compact control gaps, small-button icon gap." },
+    { "step": "2",   "rem": "0.5",   "px": 8,  "classes": "p-2 / gap-2",         "usage": "Button icon gap, list-item gaps, badge padding." },
+    { "step": "2.5", "rem": "0.625", "px": 10, "classes": "px-2.5",              "usage": "Small button horizontal padding." },
+    { "step": "3",   "rem": "0.75",  "px": 12, "classes": "px-3 / gap-3",        "usage": "Button / input horizontal padding, form-field gaps." },
+    { "step": "4",   "rem": "1",     "px": 16, "classes": "p-4 / gap-4 / mt-4",  "usage": "Card body padding (compact), section internals." },
+    { "step": "6",   "rem": "1.5",   "px": 24, "classes": "p-6 / my-6",          "usage": "Card / panel / dialog body padding, prose rhythm." },
+    { "step": "8",   "rem": "2",     "px": 32, "classes": "p-8 / mt-8",          "usage": "Page padding, h3 top margin." },
+    { "step": "10",  "rem": "2.5",   "px": 40, "classes": "mt-10",               "usage": "h2 top margin — major section break." },
+    { "step": "12",  "rem": "3",     "px": 48, "classes": "h-12",                "usage": "Large control height." },
+    { "step": "16",  "rem": "4",     "px": 64, "classes": "space-y-16",          "usage": "Between-section spacing on docs pages." }
+  ]
+}

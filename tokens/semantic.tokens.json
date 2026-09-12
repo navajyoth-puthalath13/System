@@ -1,0 +1,288 @@
+{
+  "text": {
+    "dark-950": {
+      "$type": "color",
+      "$value": "{gray.950}",
+      "$description": "gray.950 \u00b7 #030712"
+    },
+    "sub-700": {
+      "$type": "color",
+      "$value": "{gray.700}",
+      "$description": "gray.700 \u00b7 #364153"
+    },
+    "soft-600": {
+      "$type": "color",
+      "$value": "{gray.600}",
+      "$description": "gray.600 \u00b7 #4A5565"
+    },
+    "disabled-400": {
+      "$type": "color",
+      "$value": "{gray.400}",
+      "$description": "gray.400 \u00b7 #99A1AF"
+    },
+    "white": {
+      "$type": "color",
+      "$value": "{white}",
+      "$description": "white \u00b7 #FFFFFF"
+    }
+  },
+  "icon": {
+    "dark-950": {
+      "$type": "color",
+      "$value": "{gray.950}",
+      "$description": "gray.950 \u00b7 #030712"
+    },
+    "sub-700": {
+      "$type": "color",
+      "$value": "{gray.700}",
+      "$description": "gray.700 \u00b7 #364153"
+    },
+    "soft-600": {
+      "$type": "color",
+      "$value": "{gray.600}",
+      "$description": "gray.600 \u00b7 #4A5565"
+    },
+    "disabled-400": {
+      "$type": "color",
+      "$value": "{gray.400}",
+      "$description": "gray.400 \u00b7 #99A1AF"
+    },
+    "white": {
+      "$type": "color",
+      "$value": "{white}",
+      "$description": "white \u00b7 #FFFFFF"
+    }
+  },
+  "background": {
+    "darker-950": {
+      "$type": "color",
+      "$value": "{gray.950}",
+      "$description": "gray.950 \u00b7 #030712"
+    },
+    "dark-800": {
+      "$type": "color",
+      "$value": "{gray.800}",
+      "$description": "gray.800 \u00b7 #1E2939"
+    },
+    "soft-200": {
+      "$type": "color",
+      "$value": "{gray.200}",
+      "$description": "gray.200 \u00b7 #E5E7EB"
+    },
+    "light-100": {
+      "$type": "color",
+      "$value": "{gray.100}",
+      "$description": "gray.100 \u00b7 #F3F4F6"
+    },
+    "lighter-50": {
+      "$type": "color",
+      "$value": "{gray.50}",
+      "$description": "gray.50 \u00b7 #F9FAFB"
+    },
+    "white": {
+      "$type": "color",
+      "$value": "{white}",
+      "$description": "white \u00b7 #FFFFFF"
+    }
+  },
+  "information": {
+    "dark-900": {
+      "$type": "color",
+      "$value": "{sky.900}",
+      "$description": "sky.900 \u00b7 #024A70"
+    },
+    "base-500": {
+      "$type": "color",
+      "$value": "{sky.500}",
+      "$description": "sky.500 \u00b7 #00A6F4"
+    },
+    "soft-200": {
+      "$type": "color",
+      "$value": "{sky.200}",
+      "$description": "sky.200 \u00b7 #B8E6FE"
+    },
+    "light-100": {
+      "$type": "color",
+      "$value": "{sky.100}",
+      "$description": "sky.100 \u00b7 #DFF2FE"
+    },
+    "lighter-50": {
+      "$type": "color",
+      "$value": "{sky.50}",
+      "$description": "sky.50 \u00b7 #F0F9FF"
+    }
+  },
+  "warning": {
+    "dark-900": {
+      "$type": "color",
+      "$value": "{amber.900}",
+      "$description": "amber.900 \u00b7 #7B3306"
+    },
+    "base-500": {
+      "$type": "color",
+      "$value": "{amber.500}",
+      "$description": "amber.500 \u00b7 #FE9A00"
+    },
+    "soft-200": {
+      "$type": "color",
+      "$value": "{amber.200}",
+      "$description": "amber.200 \u00b7 #FEE685"
+    },
+    "light-100": {
+      "$type": "color",
+      "$value": "{amber.100}",
+      "$description": "amber.100 \u00b7 #FEF3C6"
+    },
+    "lighter-50": {
+      "$type": "color",
+      "$value": "{amber.50}",
+      "$description": "amber.50 \u00b7 #FFFBEB"
+    }
+  },
+  "negative": {
+    "dark-900": {
+      "$type": "color",
+      "$value": "{red.900}",
+      "$description": "red.900 \u00b7 #82181A"
+    },
+    "base-500": {
+      "$type": "color",
+      "$value": "{red.500}",
+      "$description": "red.500 \u00b7 #FB2C36"
+    },
+    "soft-200": {
+      "$type": "color",
+      "$value": "{red.200}",
+      "$description": "red.200 \u00b7 #FFC9C9"
+    },
+    "light-100": {
+      "$type": "color",
+      "$value": "{red.100}",
+      "$description": "red.100 \u00b7 #FFE2E2"
+    },
+    "lighter-50": {
+      "$type": "color",
+      "$value": "{red.50}",
+      "$description": "red.50 \u00b7 #FEF2F2"
+    }
+  },
+  "positive": {
+    "dark-900": {
+      "$type": "color",
+      "$value": "{green.900}",
+      "$description": "green.900 \u00b7 #0D542B"
+    },
+    "base-500": {
+      "$type": "color",
+      "$value": "{green.500}",
+      "$description": "green.500 \u00b7 #00C950"
+    },
+    "soft-200": {
+      "$type": "color",
+      "$value": "{green.200}",
+      "$description": "green.200 \u00b7 #B9F8CF"
+    },
+    "light-100": {
+      "$type": "color",
+      "$value": "{green.100}",
+      "$description": "green.100 \u00b7 #DCFCE7"
+    },
+    "lighter-50": {
+      "$type": "color",
+      "$value": "{green.50}",
+      "$description": "green.50 \u00b7 #F0FDF4"
+    }
+  },
+  "border": {
+    "darker-400": {
+      "$type": "color",
+      "$value": "{gray.400}",
+      "$description": "gray.400 \u00b7 #99A1AF"
+    },
+    "dark-300": {
+      "$type": "color",
+      "$value": "{gray.300}",
+      "$description": "gray.300 \u00b7 #D1D5DC"
+    },
+    "default-200": {
+      "$type": "color",
+      "$value": "{gray.200}",
+      "$description": "gray.200 \u00b7 #E5E7EB"
+    },
+    "soft-100": {
+      "$type": "color",
+      "$value": "{gray.100}",
+      "$description": "gray.100 \u00b7 #F3F4F6"
+    },
+    "white": {
+      "$type": "color",
+      "$value": "{white}",
+      "$description": "white \u00b7 #FFFFFF"
+    },
+    "warning-300": {
+      "$type": "color",
+      "$value": "{amber.300}",
+      "$description": "amber.300 \u00b7 #FFD230"
+    },
+    "warning-200": {
+      "$type": "color",
+      "$value": "{amber.200}",
+      "$description": "amber.200 \u00b7 #FEE685"
+    },
+    "warning-100": {
+      "$type": "color",
+      "$value": "{amber.100}",
+      "$description": "amber.100 \u00b7 #FEF3C6"
+    },
+    "negative-300": {
+      "$type": "color",
+      "$value": "{red.300}",
+      "$description": "red.300 \u00b7 #FFA2A2"
+    },
+    "negative-200": {
+      "$type": "color",
+      "$value": "{red.200}",
+      "$description": "red.200 \u00b7 #FFC9C9"
+    },
+    "negative-100": {
+      "$type": "color",
+      "$value": "{red.100}",
+      "$description": "red.100 \u00b7 #FFE2E2"
+    },
+    "positive-300": {
+      "$type": "color",
+      "$value": "{green.300}",
+      "$description": "green.300 \u00b7 #7BF1A8"
+    },
+    "positive-200": {
+      "$type": "color",
+      "$value": "{green.200}",
+      "$description": "green.200 \u00b7 #B9F8CF"
+    },
+    "positive-100": {
+      "$type": "color",
+      "$value": "{green.100}",
+      "$description": "green.100 \u00b7 #DCFCE7"
+    }
+  },
+  "action": {
+    "primary": {
+      "$type": "color",
+      "$value": "{sky.600}",
+      "$description": "sky.600 \u00b7 #0084D1"
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "{sky.700}",
+      "$description": "sky.700 \u00b7 #0069A8"
+    },
+    "primary-soft": {
+      "$type": "color",
+      "$value": "{sky.100}",
+      "$description": "sky.100 \u00b7 #DFF2FE"
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Semantic (derived from Mode 1 primitives)"
+  }
+}

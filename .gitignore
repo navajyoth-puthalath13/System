@@ -1,0 +1,4 @@
+node_modules/
+public/registry/
+*.log
+.DS_Store

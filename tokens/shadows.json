@@ -1,0 +1,12 @@
+{
+  "$comment": "Elevation shadows with controlled opacity. All shadows use gray-950 (#030712 = rgb 3,7,18) — a single near-black ink, not a grayscale palette. Five outer levels (xs→xl) + one inset. X stays 0 for a consistent light source; Y/blur increase with elevation, spread grows more negative to control the footprint. A shadow may override the default color with its own `color` (rgb triple). Values from the Figma export (Mode 1.tokens.json).",
+  "color": "3, 7, 18",
+  "shadows": [
+    { "name": "xs",    "x": 0, "y": 1,  "blur": 2,  "spread": 0,  "opacity": 0.10, "purpose": "Very subtle separation", "use": ["Inputs", "Low containers", "Subtle raised surfaces"] },
+    { "name": "sm",    "x": 0, "y": 2,  "blur": 4,  "spread": -1, "opacity": 0.08, "purpose": "Raised surfaces and cards", "use": ["Cards", "Tiles", "Panels"] },
+    { "name": "md",    "x": 0, "y": 4,  "blur": 8,  "spread": -2, "opacity": 0.10, "purpose": "Floating controls and menus", "use": ["Dropdowns", "Menus", "Floating controls"] },
+    { "name": "lg",    "x": 0, "y": 8,  "blur": 16, "spread": -4, "opacity": 0.12, "purpose": "Popovers and elevated overlays", "use": ["Popovers", "Overlays", "Floating panels"] },
+    { "name": "xl",    "x": 0, "y": 16, "blur": 24, "spread": -6, "opacity": 0.14, "purpose": "Dialogs and high-elevation overlays", "use": ["Dialogs", "Modals", "Major overlays"] },
+    { "name": "inner", "x": 0, "y": 2,  "blur": 10, "spread": 0,  "opacity": 0.18, "inset": true, "colorRef": "gray.950", "purpose": "Pressed / recessed states", "use": ["Pressed buttons", "Inset fields", "Wells"] }
+  ]
+}

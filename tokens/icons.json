@@ -1,0 +1,15 @@
+{
+  "$comment": "Icons — the Lucide icon set (lucide.dev), consumed via the installed lucide-react package. Only the size + per-size stroke scale is a token here; the icons themselves come from Lucide. Documented in docs/icons.md.",
+  "library": "Lucide",
+  "homepage": "https://lucide.dev",
+  "sizes": [
+    { "size": 16, "stroke": 0.75 },
+    { "size": 20, "stroke": 1.5 },
+    { "size": 24, "stroke": 2 },
+    { "size": 32, "stroke": 2.5 },
+    { "size": 40, "stroke": 2.75 },
+    { "size": 48, "stroke": 3 }
+  ],
+  "default": 24,
+  "defaultStroke": 2
+}

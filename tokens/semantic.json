@@ -1,0 +1,74 @@
+{
+  "$comment": "Purpose-driven semantic layer (v2). Names say the ROLE, not the shade. Each token points at a primitive for light + dark. Source of truth for src/index.css, the registry theme item, and the docs page. `dark` values are derived (single-mode Figma export) — refine when a real dark mode is exported.",
+  "groups": {
+    "text": [
+      { "name": "primary",   "ref": "gray.950", "dark": "gray.50",  "purpose": "Main, highest-emphasis text — headings, primary labels." },
+      { "name": "secondary", "ref": "gray.700", "dark": "gray.300", "purpose": "Supporting text, lower emphasis than primary." },
+      { "name": "muted",     "ref": "gray.600", "dark": "gray.400", "purpose": "Low-emphasis text — metadata, timestamps, hints." },
+      { "name": "disabled",  "ref": "gray.400", "dark": "gray.600", "purpose": "Text for unavailable / disabled UI." },
+      { "name": "inverse",   "ref": "white",    "dark": "gray.950", "purpose": "Text on dark / inverse surfaces." }
+    ],
+    "icon": [
+      { "name": "primary",   "ref": "gray.950", "dark": "gray.50",  "purpose": "Main / high-emphasis icon." },
+      { "name": "secondary", "ref": "gray.700", "dark": "gray.300", "purpose": "Supporting icon." },
+      { "name": "muted",     "ref": "gray.600", "dark": "gray.400", "purpose": "Low-emphasis icon." },
+      { "name": "disabled",  "ref": "gray.400", "dark": "gray.600", "purpose": "Disabled icon." },
+      { "name": "inverse",   "ref": "white",    "dark": "gray.950", "purpose": "Icon on dark / inverse surface." }
+    ],
+    "background": [
+      { "name": "default", "ref": "white",    "dark": "gray.950", "purpose": "Default surface." },
+      { "name": "muted",   "ref": "gray.50",  "dark": "gray.900", "purpose": "Very subtle surface." },
+      { "name": "light",   "ref": "gray.100", "dark": "gray.900", "purpose": "Light surface." },
+      { "name": "subtle",  "ref": "gray.200", "dark": "gray.800", "purpose": "Subtle surface." },
+      { "name": "strong",  "ref": "gray.800", "dark": "gray.200", "purpose": "Strong dark surface." },
+      { "name": "inverse", "ref": "gray.950", "dark": "gray.50",  "purpose": "Dark / inverse surface." }
+    ],
+    "border": [
+      { "name": "subtle",   "ref": "gray.100", "dark": "gray.800", "purpose": "Low-emphasis separation." },
+      { "name": "default",  "ref": "gray.200", "dark": "gray.800", "purpose": "Standard component boundary." },
+      { "name": "emphasis", "ref": "gray.300", "dark": "gray.700", "purpose": "More visible boundary." },
+      { "name": "strong",   "ref": "gray.400", "dark": "gray.600", "purpose": "Strong boundary." },
+      { "name": "inverse",  "ref": "white",    "dark": "gray.800", "purpose": "Border on dark / inverse surfaces." },
+      { "name": "warning-subtle",  "ref": "amber.100", "dark": "amber.900", "purpose": "Warning boundary, subtle." },
+      { "name": "warning",         "ref": "amber.200", "dark": "amber.800", "purpose": "Warning boundary (default)." },
+      { "name": "warning-strong",  "ref": "amber.300", "dark": "amber.700", "purpose": "Warning boundary, strong." },
+      { "name": "negative-subtle", "ref": "red.100",   "dark": "red.900",   "purpose": "Error boundary, subtle." },
+      { "name": "negative",        "ref": "red.200",   "dark": "red.800",   "purpose": "Error boundary (default)." },
+      { "name": "negative-strong", "ref": "red.300",   "dark": "red.700",   "purpose": "Error boundary, strong." },
+      { "name": "positive-subtle", "ref": "green.100", "dark": "green.900", "purpose": "Positive boundary, subtle." },
+      { "name": "positive",        "ref": "green.200", "dark": "green.800", "purpose": "Positive boundary (default)." },
+      { "name": "positive-strong", "ref": "green.300", "dark": "green.700", "purpose": "Positive boundary, strong." }
+    ],
+    "action": [
+      { "name": "primary",         "ref": "sky.600", "dark": "sky.500", "purpose": "Main CTA / action (default state)." },
+      { "name": "primary-hover",   "ref": "sky.700", "dark": "sky.600", "purpose": "Hover feedback. Dark mode resolves darker than Primary so hover doesn't lighten." },
+      { "name": "primary-clicked", "ref": "sky.800", "dark": "sky.300", "purpose": "Pressed / clicked feedback. PLACEHOLDER — set from real interaction design." },
+      { "name": "primary-soft",    "ref": "sky.100", "dark": "sky.950", "purpose": "Lower-emphasis primary treatment." }
+    ],
+    "information": [
+      { "name": "text",       "ref": "blue.900", "dark": "blue.300", "purpose": "Information text / strong communication." },
+      { "name": "icon",       "ref": "blue.500", "dark": "blue.400", "purpose": "Information indicator / icon." },
+      { "name": "border",     "ref": "blue.200", "dark": "blue.800", "purpose": "Information boundary." },
+      { "name": "surface",    "ref": "blue.100", "dark": "blue.950", "purpose": "Light information surface." },
+      { "name": "background", "ref": "blue.50",  "dark": "blue.950", "purpose": "Subtle information background." }
+    ],
+    "warning": [
+      { "name": "text",          "ref": "amber.900", "dark": "amber.300", "purpose": "Warning message / content." },
+      { "name": "icon",          "ref": "amber.500", "dark": "amber.400", "purpose": "Warning indicator." },
+      { "name": "surface",       "ref": "amber.100", "dark": "amber.950", "purpose": "Light warning surface." },
+      { "name": "background",    "ref": "amber.50",  "dark": "amber.950", "purpose": "Subtle warning background." }
+    ],
+    "negative": [
+      { "name": "text",          "ref": "red.900", "dark": "red.300", "purpose": "Error / destructive text." },
+      { "name": "icon",          "ref": "red.500", "dark": "red.400", "purpose": "Error / destructive indicator." },
+      { "name": "surface",       "ref": "red.100", "dark": "red.950", "purpose": "Light negative surface." },
+      { "name": "background",    "ref": "red.50",  "dark": "red.950", "purpose": "Subtle negative background." }
+    ],
+    "positive": [
+      { "name": "text",          "ref": "green.900", "dark": "green.300", "purpose": "Positive / success text." },
+      { "name": "icon",          "ref": "green.500", "dark": "green.400", "purpose": "Positive indicator." },
+      { "name": "surface",       "ref": "green.100", "dark": "green.950", "purpose": "Light positive surface." },
+      { "name": "background",    "ref": "green.50",  "dark": "green.950", "purpose": "Subtle positive background." }
+    ]
+  }
+}
