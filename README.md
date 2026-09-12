@@ -2,7 +2,7 @@
 
 # System
 
-**A token-first design system, distributed as a shadcn-compatible registry.**
+**A thoughtful design system bringing tokens, foundations, and reusable components together for consistent, accessible, and scalable product experiences.**
 
 [![Documentation](https://img.shields.io/badge/Documentation-system--three--rouge.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://system-three-rouge.vercel.app)
 &nbsp;[![Registry](https://img.shields.io/badge/shadcn-registry-111827?style=flat-square)](https://system-three-rouge.vercel.app)
@@ -12,9 +12,10 @@
 
 ---
 
-System defines colour, typography, icons, spacing, and elevation **once** as design tokens,
-then consumes them everywhere through CSS variables — so the visual language stays consistent
-from design to production, and re-theming means re-pointing tokens, not editing components.
+Distributed as a [shadcn](https://ui.shadcn.com)-compatible registry, System defines colour,
+typography, icons, spacing, and elevation **once** as design tokens, then consumes them
+everywhere through CSS variables — so the visual language stays consistent from design to
+production, and re-theming means re-pointing tokens, not editing components.
 
 ## 🔗 Links
 
