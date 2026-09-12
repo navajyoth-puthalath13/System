@@ -92,6 +92,9 @@
     .iconbtn { cursor: pointer; width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--border); background: var(--panel); color: var(--icon-sub-700); display: grid; place-items: center; font-size: 15px; }
     .iconbtn:hover { color: var(--icon-dark-950); }
     .iconbtn:hover { background: var(--panel-2); }
+    /* theme switcher — moon (light mode) in moon-yellow, sun (dark mode) in sun-yellow */
+    #toggle, #toggle:hover { color: #F0C420; }
+    html[data-theme="dark"] #toggle, html[data-theme="dark"] #toggle:hover { color: #FFC725; }
     .crumb { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--muted); }
     .crumb a:hover { color: var(--fg); }
     .crumb .sep { color: var(--icon-disabled-400); }
