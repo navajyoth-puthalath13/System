@@ -349,6 +349,24 @@
 
     footer { border-top: 1px solid var(--border); margin-top: 60px; padding: 22px 0 0; font-size: 13px; color: var(--muted); }
     footer code { font-family: var(--mono); }
+    /* page nav — previous / next, replaces the per-page source-of-truth footer */
+    .page-nav { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--border); margin-top: 64px; padding-top: 24px; }
+    .page-nav .pn { display: flex; flex-direction: column; gap: 2px; min-width: 168px; max-width: 48%; text-decoration: none; border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; transition: border-color .12s, background .12s; }
+    .page-nav .pn:hover { border-color: var(--border-strong); background: var(--panel-2); }
+    .page-nav .pn small { font-size: 12px; color: var(--faint); }
+    .page-nav .pn b { font-size: 14.5px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
+    .page-nav .pn.next { margin-left: auto; text-align: right; }
+    /* quick reference — do / don't */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dd-col { border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; background: var(--panel); }
+    .dd-head { font-weight: 650; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.01em; }
+    .dd-do .dd-head { color: #16a34a; }
+    .dd-dont .dd-head { color: #ef4444; }
+    .dd-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .dd-col li { font-size: 13.5px; color: var(--muted); line-height: 1.5; padding-left: 22px; position: relative; }
+    .dd-do li::before { content: "✓"; position: absolute; left: 0; color: #16a34a; font-weight: 700; }
+    .dd-dont li::before { content: "✕"; position: absolute; left: 0; color: #ef4444; font-weight: 700; }
+    @media (max-width: 640px) { .dodont { grid-template-columns: 1fr; } .page-nav { flex-direction: column; } .page-nav .pn { max-width: none; } }
 
     .toast { position: fixed; bottom: 24px; left: calc(50% + var(--sidebar-w) / 2); transform: translateX(-50%) translateY(16px); background: var(--fg); color: var(--bg); padding: 8px 15px; border-radius: 8px; font: 500 13px var(--sans); opacity: 0; pointer-events: none; transition: .18s; z-index: 70; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -471,7 +489,9 @@
         <p>In the token registry the semantic layer stays independent of the primitive layer. Dots flatten to CSS variables — <code>text.primary</code> becomes <code>--text-primary</code>, <code>warning.border-strong</code> becomes <code>--warning-border-strong</code>. A component uses <code>var(--text-primary)</code>, so the primitive underneath can evolve without a component-by-component rewrite.</p>
       </section>
 
-      <footer>Source of truth: <code>tokens/primitives.tokens.json</code> + <code>tokens/semantic.json</code> · rebuild with <code>npm run tokens</code>. Generated documentation.</footer>
+      <nav class="page-nav">
+        <a class="pn next" data-view="typography" href="#typography"><small>Next →</small><b>Typography</b></a>
+      </nav>
     </main>
 
     <main id="view-typography" hidden>
@@ -487,7 +507,35 @@
 
       <div id="type-content"></div>
 
-      <footer>Source of truth: <code>tokens/typography.json</code> · rebuild with <code>npm run tokens</code>. Generated documentation.</footer>
+      <section class="block">
+        <h2>Quick reference</h2>
+        <p class="sub">A short do / don't for applying the type scale.</p>
+        <div class="dodont">
+          <div class="dd-col dd-do">
+            <div class="dd-head">Do</div>
+            <ul>
+              <li>Use the presets — <code>.type-h1</code>…<code>.type-h6</code>, <code>.type-paragraph-lg/md/sm/smx</code>.</li>
+              <li>Pick a level by <b>role</b> (heading rank, body copy), then set weight with <code>.fw-*</code>.</li>
+              <li>Keep to the one unified scale — the same sizes across web and mobile.</li>
+              <li>Pair size with its bundled line-height; let the token carry both.</li>
+            </ul>
+          </div>
+          <div class="dd-col dd-dont">
+            <div class="dd-head">Don't</div>
+            <ul>
+              <li>Invent arbitrary font sizes (<code>text-[15px]</code>) outside the scale.</li>
+              <li>Use <b>SMX</b> or the smallest sizes for standard body copy.</li>
+              <li>Hand-set line-heights that drift off the scale's pairing.</li>
+              <li>Skip heading ranks for visual weight — reach for a weight utility instead.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <nav class="page-nav">
+        <a class="pn prev" data-view="colors" href="#"><small>← Previous</small><b>Colors</b></a>
+        <a class="pn next" data-view="foundation" href="#foundation"><small>Next →</small><b>Foundation</b></a>
+      </nav>
     </main>
 
     <main id="view-foundation" hidden>
@@ -512,7 +560,10 @@
         <div id="shadow-content"></div>
       </section>
 
-      <footer>Source of truth: <code>tokens/spacing.json</code> + <code>tokens/shadows.json</code> · guidance in <code>docs/spacing.md</code> and <code>docs/shadows.md</code>. Rebuild with <code>npm run tokens</code>.</footer>
+      <nav class="page-nav">
+        <a class="pn prev" data-view="typography" href="#typography"><small>← Previous</small><b>Typography</b></a>
+        <a class="pn next" data-view="button" href="#button"><small>Next →</small><b>Button</b></a>
+      </nav>
     </main>
 
     <main id="view-button" hidden>
@@ -522,7 +573,9 @@
 
       <div id="button-content"></div>
 
-      <footer>Source: <code>src/components/ui/button.tsx</code> · install <code>npx shadcn@latest add http://localhost:5178/registry/button.json</code>.</footer>
+      <nav class="page-nav">
+        <a class="pn prev" data-view="foundation" href="#foundation"><small>← Previous</small><b>Foundation</b></a>
+      </nav>
     </main>
 
     <section id="view-source" hidden>
@@ -670,6 +723,13 @@
     figmaLink.addEventListener("click", (e) => { e.preventDefault(); showView("figma"); });
     notionLink.addEventListener("click", (e) => { e.preventDefault(); showView("notion"); });
     window.addEventListener("hashchange", () => showView(location.hash.slice(1) || "colors"));
+    // previous / next page nav (footer of each documentation page)
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest(".page-nav a[data-view]");
+      if (!a) return;
+      e.preventDefault();
+      showView(a.dataset.view);
+    });
     showView(location.hash.slice(1) || "colors");
 
     const ordered = [...DS.semanticGroups].sort((a, b) => (ORDER.indexOf(a.group)<0?99:ORDER.indexOf(a.group)) - (ORDER.indexOf(b.group)<0?99:ORDER.indexOf(b.group)));
