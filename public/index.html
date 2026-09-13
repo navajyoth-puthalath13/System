@@ -105,11 +105,15 @@
     .main-wrap { margin-left: var(--sidebar-w); transition: margin-left .22s ease; }
     body.collapsed aside { transform: translateX(-100%); }
     body.collapsed .main-wrap { margin-left: 0; }
+    .nav-backdrop { display: none; }
     main { max-width: 940px; margin: 0 auto; padding: 40px 40px 80px; }
     @media (max-width: 860px) {
       aside { transform: translateX(-100%); }
       .main-wrap { margin-left: 0; }
       body.nav-open aside { transform: translateX(0); }
+      /* tap-to-dismiss backdrop behind the open mobile nav */
+      .nav-backdrop { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 45; }
+      body.nav-open .nav-backdrop { opacity: 1; pointer-events: auto; }
       main { padding: 32px 24px 64px; }
     }
 
@@ -412,6 +416,7 @@
     </div></div>
     <nav id="nav"></nav>
   </aside>
+  <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
   <div class="main-wrap">
     <div class="topbar">
@@ -1024,6 +1029,17 @@
       if (window.matchMedia("(max-width: 860px)").matches) body.classList.toggle("nav-open");
       else body.classList.toggle("collapsed");
     };
+    // dismiss the mobile nav: tap the backdrop, tap a nav link, press Escape, or swipe left
+    const closeNav = () => body.classList.remove("nav-open");
+    document.getElementById("nav-backdrop").addEventListener("click", closeNav);
+    document.getElementById("nav").addEventListener("click", (e) => { if (e.target.closest("a")) closeNav(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeNav(); });
+    (() => {
+      const aside = document.querySelector("aside");
+      let x0 = null;
+      aside.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      aside.addEventListener("touchend", (e) => { if (x0 !== null && e.changedTouches[0].clientX - x0 < -45) closeNav(); x0 = null; }, { passive: true });
+    })();
     const html = document.documentElement;
     const saved = localStorage.getItem("ds-theme"); if (saved) html.dataset.theme = saved;
     const sync = () => document.getElementById("toggle").innerHTML = html.dataset.theme === "dark" ? ICONS.sun : ICONS.moon; sync();
