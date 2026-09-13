@@ -603,6 +603,13 @@ Colour changes (`color`, `background-color`, `border-color`) animate over **150 
 `touch-action: manipulation` and `-webkit-tap-highlight-color: transparent` so fast /
 repeated clicks feel crisp — no tap delay and no grey flash on touch.
 
+> **Touch note.** iOS Safari only applies `:active` (the pressed recess) on tap when the
+> page has a touch listener registered — otherwise a tap shows no press feedback. Register
+> a no-op once at the app root: `document.addEventListener("touchstart", () => {}, { passive: true })`.
+> Also prefer neutralising `:hover` under `@media (hover: none)` so a tap doesn't leave the
+> button stuck in its hover colour. (Tailwind's `hover:` variant already gates on hover
+> support; the hand-written showcase does this explicitly.)
+
 > **`box-shadow` is deliberately NOT transitioned.** The rest→press swap goes from an
 > *outer* shadow to an *inset* one, and browsers cannot interpolate between inset and
 > non-inset shadows — a transitioned `box-shadow` applies the change *discretely* (only
