@@ -1,11 +1,11 @@
 <div align="center">
 
-# System
+<img src="Cover.png" alt="System — a design system bringing foundations, tokens, components, and guidelines together, designed, documented, and built as one system" width="840" />
 
 **A thoughtful design system bringing tokens, foundations, and reusable components together for consistent, accessible, and scalable product experiences.**
 
 [![Documentation](https://img.shields.io/badge/Documentation-system--three--rouge.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://system-three-rouge.vercel.app)
-&nbsp;[![Registry](https://img.shields.io/badge/shadcn-registry-111827?style=flat-square)](https://system-three-rouge.vercel.app)
+&nbsp;[![Registry](https://img.shields.io/badge/Registry-111827?style=flat-square)](https://system-three-rouge.vercel.app)
 &nbsp;[![License](https://img.shields.io/badge/License-MIT-16A34A?style=flat-square)](LICENSE)
 
 </div>
