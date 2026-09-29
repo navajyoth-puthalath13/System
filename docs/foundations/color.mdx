@@ -1,0 +1,48 @@
+---
+title: Color
+category: foundation
+status: stable
+source: tokens/primitives/color.json
+description: The two-tier colour system — primitive ramps and the semantic roles that reference them.
+---
+
+# Color
+
+Colour in the system is defined in **two tiers**, and components only ever consume the
+second one.
+
+## Primitives
+
+The raw palette lives in [`tokens/primitives/color.json`](../../tokens/primitives/color.json):
+**13 colour ramps** (gray, red, orange, amber, yellow, lime, green, emerald, cyan, sky,
+blue, indigo, violet) each from **50 → 950**, plus `white`, `black`, and `transparent`.
+
+Primitives are values with **no meaning attached** — `sky-600` is a colour, not a role.
+Components must never reference a primitive directly.
+
+## Semantic roles
+
+Semantic tokens live in [`tokens/semantic/`](../../tokens/semantic/) and give primitives a
+**job**. Each role points at a primitive and resolves a light and a dark value:
+
+| Role group | File | Purpose |
+| --- | --- | --- |
+| `text` | `semantic/text.json` | Text emphasis (primary, secondary, disabled, inverse). |
+| `background` | `semantic/background.json` | Surfaces (default, muted, light, subtle, strong, inverse). |
+| `border` | `semantic/border.json` | Dividers and outlines, including status border tints. |
+| `action` | `semantic/action.json` | The primary CTA colour and its hover / clicked / soft states. |
+| `icon` + status | `semantic/color.json` | Icon colours and the `information` / `warning` / `negative` / `positive` families. |
+
+Because a role never hard-codes a hex (`--action-primary: var(--sky-600)`), the palette
+underneath can change without touching a single component. See
+[Semantic Tokens](./semantic-tokens.mdx) for the reference model.
+
+## Rules
+
+- **Consume roles, not primitives.** Use `var(--text-primary)`, never `var(--sky-600)`.
+- **Pick by role, not by how the swatch looks.**
+- **Let the token resolve light/dark** — the same role adapts across themes.
+- **Extend the semantic layer** rather than introducing one-off colours.
+
+_Values are generated into `src/index.css` by `npm run tokens`. Edit the token JSON, never
+the CSS._

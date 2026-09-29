@@ -1,0 +1,89 @@
+{
+  "$comment": "Semantic border roles (incl. status border tints).",
+  "border": [
+    {
+      "name": "subtle",
+      "ref": "gray.100",
+      "dark": "gray.800",
+      "purpose": "Low-emphasis separation."
+    },
+    {
+      "name": "default",
+      "ref": "gray.200",
+      "dark": "gray.800",
+      "purpose": "Standard component boundary."
+    },
+    {
+      "name": "emphasis",
+      "ref": "gray.300",
+      "dark": "gray.700",
+      "purpose": "More visible boundary."
+    },
+    {
+      "name": "strong",
+      "ref": "gray.400",
+      "dark": "gray.600",
+      "purpose": "Strong boundary."
+    },
+    {
+      "name": "inverse",
+      "ref": "white",
+      "dark": "gray.800",
+      "purpose": "Border on dark / inverse surfaces."
+    },
+    {
+      "name": "warning-subtle",
+      "ref": "amber.100",
+      "dark": "amber.900",
+      "purpose": "Warning boundary, subtle."
+    },
+    {
+      "name": "warning",
+      "ref": "amber.200",
+      "dark": "amber.800",
+      "purpose": "Warning boundary (default)."
+    },
+    {
+      "name": "warning-strong",
+      "ref": "amber.300",
+      "dark": "amber.700",
+      "purpose": "Warning boundary, strong."
+    },
+    {
+      "name": "negative-subtle",
+      "ref": "red.100",
+      "dark": "red.900",
+      "purpose": "Error boundary, subtle."
+    },
+    {
+      "name": "negative",
+      "ref": "red.200",
+      "dark": "red.800",
+      "purpose": "Error boundary (default)."
+    },
+    {
+      "name": "negative-strong",
+      "ref": "red.300",
+      "dark": "red.700",
+      "purpose": "Error boundary, strong."
+    },
+    {
+      "name": "positive-subtle",
+      "ref": "green.100",
+      "dark": "green.900",
+      "purpose": "Positive boundary, subtle."
+    },
+    {
+      "name": "positive",
+      "ref": "green.200",
+      "dark": "green.800",
+      "purpose": "Positive boundary (default)."
+    },
+    {
+      "name": "positive-strong",
+      "ref": "green.300",
+      "dark": "green.700",
+      "purpose": "Positive boundary, strong."
+    }
+  ]
+}

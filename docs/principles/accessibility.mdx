@@ -1,0 +1,45 @@
+---
+title: Accessibility
+category: principle
+status: stable
+description: The accessibility baseline every token and component in the system is held to.
+---
+
+# Accessibility
+
+Accessibility is a **constraint on the system**, not a per-component afterthought. The
+foundations are built so that components inherit accessible behaviour by default.
+
+## Colour & contrast
+
+- Text and interactive colours are defined as **semantic roles** so contrast can be tuned
+  centrally per theme (light and dark) rather than per component.
+- Do not rely on colour alone to convey state — pair status colours (`warning`, `negative`,
+  `positive`) with an icon, label, or shape.
+- Target **WCAG 2.1 AA** contrast (4.5:1 body text, 3:1 large text and UI boundaries) when
+  assigning a role to a surface.
+
+## Focus
+
+- Every interactive component exposes a **visible focus ring** that is distinct from its
+  border and does not depend on colour alone. The Button uses `indigo-600`, 2px, 4px offset.
+- Focus styles use `:focus-visible` so they appear for keyboard users without flashing on
+  pointer interaction.
+
+## Keyboard & semantics
+
+- Interactive elements render as their native element (`<button>`) so keyboard and screen
+  reader behaviour comes for free.
+- Icon-only controls **must** carry an accessible label (`aria-label`).
+
+## Motion
+
+- Interaction feedback is quick and non-essential; respect `prefers-reduced-motion` when
+  adding new animation, and never make motion the only signal for a state change.
+
+## Touch targets
+
+- Interactive controls should meet a comfortable touch target; the smallest Button height is
+  32px, and icon-only controls are square at the same height.
+
+_These are the rules new foundations and components are reviewed against._

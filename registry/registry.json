@@ -1,0 +1,224 @@
+{
+  "name": "system",
+  "description": "Structured, machine-readable map of the design system. Source of relationships for future MCP / RAG layers.",
+  "generated": true,
+  "counts": {
+    "components": 1,
+    "tokenFiles": 11,
+    "docs": 10,
+    "schemas": 3
+  },
+  "components": [
+    {
+      "name": "Button",
+      "id": "button",
+      "category": "actions",
+      "implementation": "components/button/button.tsx",
+      "documentation": "components/button/button.mdx",
+      "schema": "components/button/schema.json",
+      "variants": [
+        "primary",
+        "secondary",
+        "neutral",
+        "tertiary"
+      ],
+      "sizes": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "pressed",
+        "disabled"
+      ],
+      "tokens": {
+        "action": [
+          "action.primary",
+          "action.primary-hover",
+          "action.primary-soft"
+        ],
+        "text": [
+          "text.primary",
+          "text.inverse",
+          "text.disabled"
+        ],
+        "background": [
+          "background.muted",
+          "background.light"
+        ],
+        "border": [
+          "border.strong"
+        ],
+        "shadow": [
+          "shadow-sm",
+          "shadow-xs",
+          "shadow-inner"
+        ],
+        "focus": [
+          "indigo-600"
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "primitives": [
+      {
+        "group": "color",
+        "tier": "primitive",
+        "path": "tokens/primitives/color.json",
+        "empty": false
+      },
+      {
+        "group": "icon",
+        "tier": "primitive",
+        "path": "tokens/primitives/icon.json",
+        "empty": false
+      },
+      {
+        "group": "radius",
+        "tier": "primitive",
+        "path": "tokens/primitives/radius.json",
+        "empty": true
+      },
+      {
+        "group": "shadow",
+        "tier": "primitive",
+        "path": "tokens/primitives/shadow.json",
+        "empty": false
+      },
+      {
+        "group": "spacing",
+        "tier": "primitive",
+        "path": "tokens/primitives/spacing.json",
+        "empty": false
+      },
+      {
+        "group": "typography",
+        "tier": "primitive",
+        "path": "tokens/primitives/typography.json",
+        "empty": false
+      }
+    ],
+    "semantic": [
+      {
+        "group": "action",
+        "tier": "semantic",
+        "path": "tokens/semantic/action.json",
+        "empty": false
+      },
+      {
+        "group": "background",
+        "tier": "semantic",
+        "path": "tokens/semantic/background.json",
+        "empty": false
+      },
+      {
+        "group": "border",
+        "tier": "semantic",
+        "path": "tokens/semantic/border.json",
+        "empty": false
+      },
+      {
+        "group": "color",
+        "tier": "semantic",
+        "path": "tokens/semantic/color.json",
+        "empty": false
+      },
+      {
+        "group": "text",
+        "tier": "semantic",
+        "path": "tokens/semantic/text.json",
+        "empty": false
+      }
+    ]
+  },
+  "docs": [
+    {
+      "path": "docs/foundations/color.mdx",
+      "title": "Color",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/primitives/color.json",
+      "description": "The two-tier colour system — primitive ramps and the semantic roles that reference them."
+    },
+    {
+      "path": "docs/foundations/icons.mdx",
+      "title": "Icons",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/primitives/icon.json",
+      "description": "The Lucide icon set with per-size stroke widths."
+    },
+    {
+      "path": "docs/foundations/semantic-tokens.mdx",
+      "title": "Semantic Tokens",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/semantic/",
+      "description": "How semantic roles reference primitive values."
+    },
+    {
+      "path": "docs/foundations/shadows.mdx",
+      "title": "Shadows",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/primitives/shadow.json",
+      "description": "Elevation and inset shadows built on a single dark ink."
+    },
+    {
+      "path": "docs/foundations/spacing.mdx",
+      "title": "Spacing",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/primitives/spacing.json",
+      "description": "The 4px base spacing scale and how to apply it."
+    },
+    {
+      "path": "docs/foundations/typography.mdx",
+      "title": "Typography",
+      "category": "foundation",
+      "status": "stable",
+      "source": "tokens/primitives/typography.json",
+      "description": "The unified Inter type scale — headings, paragraphs, weights."
+    },
+    {
+      "path": "docs/principles/accessibility.mdx",
+      "title": "Accessibility",
+      "category": "principle",
+      "status": "stable",
+      "description": "The accessibility baseline every token and component in the system is held to."
+    },
+    {
+      "path": "docs/principles/localization.mdx",
+      "title": "Localization",
+      "category": "principle",
+      "status": "draft",
+      "description": "How the system stays adaptable to different languages, lengths, and reading directions."
+    },
+    {
+      "path": "docs/principles/usage.mdx",
+      "title": "Usage",
+      "category": "principle",
+      "status": "stable",
+      "description": "How to consume the system correctly — the source-of-truth rules and layer boundaries."
+    },
+    {
+      "path": "components/button/button.mdx",
+      "title": "Button",
+      "category": "component",
+      "status": "stable",
+      "component": "button",
+      "implementation": "components/button/button.tsx",
+      "schema": "components/button/schema.json",
+      "description": "Performs an action. Four variants, three sizes, icon-only, full states."
+    }
+  ],
+  "schemas": [
+    "schemas/component.schema.json",
+    "schemas/documentation.schema.json",
+    "schemas/token.schema.json"
+  ]
+}

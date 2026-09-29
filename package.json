@@ -6,11 +6,14 @@
   "description": "A component library + token registry, structured like Care UI (React 19 + TypeScript + Tailwind v4 + shadcn registry).",
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
-    "registry:generate": "tsx scripts/generate-registry.ts",
-    "registry:check": "tsx scripts/check-registry.ts",
-    "registry:validate": "tsx scripts/validate-registry-dependencies.ts",
-    "registry:build": "npm run tokens && npm run registry:check && npm run registry:validate && npm run registry:generate",
-    "build": "npm run registry:build",
+    "docs": "node scripts/build-docs.mjs",
+    "validate": "node scripts/validate.mjs",
+    "registry": "node scripts/generate-registry.mjs",
+    "registry:shadcn:generate": "tsx scripts/generate-registry.ts",
+    "registry:shadcn:check": "tsx scripts/check-registry.ts",
+    "registry:shadcn:validate": "tsx scripts/validate-registry-dependencies.ts",
+    "registry:shadcn": "npm run tokens && npm run registry:shadcn:check && npm run registry:shadcn:validate && npm run registry:shadcn:generate",
+    "build": "npm run validate && npm run docs && npm run registry && npm run registry:shadcn",
     "serve": "node scripts/serve.mjs"
   },
   "dependencies": {

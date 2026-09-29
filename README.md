@@ -28,8 +28,8 @@ production, and re-theming means re-pointing tokens, not editing components.
 **Foundations** — Colour (semantic roles over 13 primitive ramps) · Typography (one Inter
 scale) · Icons (Lucide, 16 → 48) · Spacing (4px base) · Elevation (shadow ladder).
 
-**Components** — Button (`src/components/ui/button.tsx`): four variants, three sizes,
-icon-only, and full interaction states (hover, focus, pressed, disabled).
+**Components** — Button (`components/button/`): four variants, three sizes, icon-only, and
+full interaction states (hover, focus, pressed, disabled).
 
 ## Installation
 
@@ -56,19 +56,28 @@ npm run build      # tokens → validate → generate the registry into public/r
 npm run serve      # serve the documentation showcase locally
 ```
 
-The JSON in `tokens/` is the **source of truth** — `src/index.css`, the showcase data, and the
-registry items are all generated from it. Never edit them by hand.
+The source is layered by responsibility: **tokens/** (JSON — values), **components/** (TSX —
+implementation), **docs/** + **components/*/*.mdx** (MDX — knowledge), **schemas/** (JSON
+Schema — machine-expected shape), **registry/** (JSON — the map). Generated files
+(`src/index.css`, `public/`, `dist/`) are never edited by hand.
 
 ## Project layout
 
 ```
-tokens/            design tokens — the source of truth
-src/
-  index.css        generated CSS variables (@theme + primitive/semantic tiers)
-  components/ui/    components (button.tsx)
-docs/              written specs, per foundation and component
-scripts/           token build + registry generation and validation
-public/            documentation showcase + generated registry items
+tokens/
+  primitives/      raw values — color, spacing, typography, shadow, radius, icon (JSON)
+  semantic/        roles that reference primitives — color, text, background, border, action
+components/
+  button/          button.tsx (impl) · button.mdx (docs) · schema.json (metadata)
+docs/
+  foundations/     one .mdx per foundation (what/why/how)
+  principles/      accessibility · localization · usage
+schemas/           JSON Schema for tokens, components, documentation
+registry/          generated machine-readable map (components, tokens, docs, schemas)
+scripts/           build-tokens · build-docs · generate-registry · validate (+ shadcn)
+mcp/               reserved for a future MCP server (not implemented)
+src/               registry hooks + lib, and the generated index.css
+public/            the documentation showcase + generated shadcn registry
 ```
 
 ## License

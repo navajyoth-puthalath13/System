@@ -1,0 +1,29 @@
+{
+  "$comment": "Semantic action roles (primary CTA + states).",
+  "action": [
+    {
+      "name": "primary",
+      "ref": "sky.600",
+      "dark": "sky.500",
+      "purpose": "Main CTA / action (default state)."
+    },
+    {
+      "name": "primary-hover",
+      "ref": "sky.700",
+      "dark": "sky.600",
+      "purpose": "Hover feedback. Dark mode resolves darker than Primary so hover doesn't lighten."
+    },
+    {
+      "name": "primary-clicked",
+      "ref": "sky.800",
+      "dark": "sky.300",
+      "purpose": "Pressed / clicked feedback. PLACEHOLDER — set from real interaction design."
+    },
+    {
+      "name": "primary-soft",
+      "ref": "sky.100",
+      "dark": "sky.950",
+      "purpose": "Lower-emphasis primary treatment."
+    }
+  ]
+}

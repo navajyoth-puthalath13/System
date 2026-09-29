@@ -1,0 +1,35 @@
+{
+  "$comment": "Semantic text roles — reference primitive color ramps.",
+  "text": [
+    {
+      "name": "primary",
+      "ref": "gray.950",
+      "dark": "gray.50",
+      "purpose": "Main, highest-emphasis text — headings, primary labels."
+    },
+    {
+      "name": "secondary",
+      "ref": "gray.700",
+      "dark": "gray.300",
+      "purpose": "Supporting text, lower emphasis than primary."
+    },
+    {
+      "name": "muted",
+      "ref": "gray.600",
+      "dark": "gray.400",
+      "purpose": "Low-emphasis text — metadata, timestamps, hints."
+    },
+    {
+      "name": "disabled",
+      "ref": "gray.400",
+      "dark": "gray.600",
+      "purpose": "Text for unavailable / disabled UI."
+    },
+    {
+      "name": "inverse",
+      "ref": "white",
+      "dark": "gray.950",
+      "purpose": "Text on dark / inverse surfaces."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://system-three-rouge.vercel.app/schemas/token.schema.json",
+  "title": "Token file",
+  "description": "A design-token source file under tokens/. Token files are JSON objects and are the single source of truth for values. Metadata keys are prefixed with '$'. Shapes vary by tier (primitive ramps, semantic role arrays, or scale configs), so the schema validates the envelope, not every value.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "$comment": { "type": "string" }
+  },
+  "additionalProperties": true,
+  "$comment": "A token file must be a JSON object (never an array or scalar). It may be empty ({}) when a category is planned but not yet defined. Values live here and nowhere else — MDX may reference token names but must not restate values."
+}

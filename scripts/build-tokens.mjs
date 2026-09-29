@@ -1,19 +1,31 @@
-// Build the token layer from the semantic model (v2, purpose-driven names).
-// Reads:  tokens/primitives.tokens.json  +  tokens/semantic.json
+// Build the token layer from the token source of truth.
+// Reads:  tokens/primitives/*.json  +  tokens/semantic/*.json
 // Emits:  src/index.css   (tier 1 primitives + tier 2 semantic + derived dark + @theme)
 //         public/data.js  (window.DS for the docs page swatches)
 //
 // Run: npm run tokens   (or: node scripts/build-tokens.mjs)
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
 
-const primDoc = read("tokens/primitives.tokens.json");
-const semantic = read("tokens/semantic.json").groups;
+const primDoc = read("tokens/primitives/color.json");
+
+// Semantic roles are split across tokens/semantic/*.json (one or more groups per
+// file). Merge them back into a single ordered { group: [tokens] } map. Group order
+// is fixed so the generated CSS is deterministic regardless of file read order.
+const SEMANTIC_ORDER = ["text", "icon", "background", "border", "action", "information", "warning", "negative", "positive"];
+const semanticMerged = {};
+for (const file of readdirSync(join(root, "tokens/semantic")).filter((f) => f.endsWith(".json"))) {
+  const doc = read(`tokens/semantic/${file}`);
+  for (const [k, v] of Object.entries(doc)) if (!k.startsWith("$")) semanticMerged[k] = v;
+}
+const semantic = Object.fromEntries(
+  SEMANTIC_ORDER.filter((g) => semanticMerged[g]).map((g) => [g, semanticMerged[g]])
+);
 
 const slug = (ref) => ref.replace(/\./g, "-").toLowerCase();
 
@@ -98,7 +110,7 @@ for (const g of groups) for (const t of g.tokens) css += `  --color-${t.var}: va
 css += `  --radius-sm: calc(var(--radius) - 4px);\n  --radius-md: calc(var(--radius) - 2px);\n  --radius-lg: var(--radius);\n  --radius-xl: calc(var(--radius) + 4px);\n}\n`;
 
 // ---- Typography (single unified scale) -----------------------------------
-const type = read("tokens/typography.json");
+const type = read("tokens/primitives/typography.json");
 const wVal = Object.fromEntries(type.weights.map((w) => [w.key, w.value]));
 
 css += `\n/* ============================================================================\n   Typography — one unified scale. Tokens are the source of truth; the .type-*\n   presets derive from them (never hard-coded). Sizes/line-heights: Figma export.\n   ========================================================================== */\n`;
@@ -121,13 +133,13 @@ for (const p of type.paragraphs) css += `  --text-paragraph-${p.key}: var(--text
 css += `}\n`;
 
 // ---- Icons (Lucide) — size tokens ----------------------------------------
-const iconsCfg = read("tokens/icons.json");
+const iconsCfg = read("tokens/primitives/icon.json");
 css += `\n/* icon sizes + per-size stroke width (Lucide set) */\n:root {\n`;
 for (const s of iconsCfg.sizes) css += `  --icon-size-${s.size}: ${s.size}px;   --icon-stroke-${s.size}: ${s.stroke};\n`;
 css += `}\n`;
 
 // ---- Shadows (elevation) -------------------------------------------------
-const shadowsCfg = read("tokens/shadows.json");
+const shadowsCfg = read("tokens/primitives/shadow.json");
 const shadowValue = (s) =>
   `${s.inset ? "inset " : ""}${s.x}px ${s.y}px ${s.blur}px ${s.spread}px rgba(${s.color ?? shadowsCfg.color}, ${s.opacity})`;
 css += `\n/* elevation shadows (black + opacity) */\n:root {\n`;
@@ -139,7 +151,7 @@ css += `}\n`;
 // ---- Spacing (base unit) -------------------------------------------------
 // Tailwind v4 already defines --spacing: 0.25rem. We re-declare it explicitly so the
 // base unit lives in the token layer (visible + versioned), and document the used steps.
-const spacingCfg = read("tokens/spacing.json");
+const spacingCfg = read("tokens/primitives/spacing.json");
 css += `\n/* spacing — base unit (Tailwind v4 default, declared explicitly for the token layer).\n   Every p-*, m-*, gap-*, space-* utility is a multiple of --spacing. Steps used:\n`;
 for (const s of spacingCfg.steps) css += `     ${s.step.padEnd(4)} = ${String(s.px).padStart(2)}px  (${s.classes})\n`;
 css += `*/\n:root {\n  --spacing: ${spacingCfg.base};   /* ${spacingCfg.basePx}px base */\n}\n@theme inline {\n  --spacing: var(--spacing);\n}\n`;
