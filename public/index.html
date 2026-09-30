@@ -389,6 +389,24 @@
     .toast { position: fixed; bottom: 24px; left: calc(50% + var(--sidebar-w) / 2); transform: translateX(-50%) translateY(16px); background: var(--fg); color: var(--bg); padding: 8px 15px; border-radius: 8px; font: 500 13px var(--sans); opacity: 0; pointer-events: none; transition: .18s; z-index: 70; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     body.collapsed .toast { left: 50%; }
+    /* command palette (⌘K) */
+    .cmdk { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; background: rgba(0,0,0,.5); backdrop-filter: blur(3px); }
+    .cmdk-panel { width: min(560px, 100%); background: var(--panel); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.5); overflow: hidden; }
+    .cmdk-search { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .cmdk-search svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+    .cmdk-search input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--fg); font: 400 15px var(--sans); }
+    .cmdk-search input::placeholder { color: var(--faint); }
+    .cmdk-esc { flex: none; font: 500 11px var(--mono); color: var(--faint); border: 1px solid var(--border); border-radius: 5px; padding: 2px 6px; }
+    .cmdk-results { max-height: 52vh; overflow-y: auto; padding: 8px; }
+    .cmdk-group { font: 600 11px var(--sans); letter-spacing: .04em; color: var(--faint); padding: 12px 10px 6px; }
+    .cmdk-item { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 8px; cursor: pointer; color: var(--fg); }
+    .cmdk-item .cmdk-ico { display: inline-flex; color: var(--muted); flex: none; }
+    .cmdk-item .cmdk-ico svg { width: 17px; height: 17px; }
+    .cmdk-item .cmdk-label { flex: 1; font-size: 14px; }
+    .cmdk-item .cmdk-hint { font: 400 11.5px var(--sans); color: var(--faint); }
+    .cmdk-item.sel, .cmdk-item:hover { background: var(--panel-2); }
+    .cmdk-item.sel .cmdk-ico { color: var(--fg); }
+    .cmdk-empty { padding: 26px 12px; text-align: center; color: var(--muted); font-size: 14px; }
   </style>
 </head>
 <body>
@@ -659,6 +677,17 @@
   </div>
 
   <div class="toast" id="toast">Copied</div>
+
+  <div class="cmdk" id="cmdk" hidden>
+    <div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Search the design system">
+      <div class="cmdk-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <input id="cmdk-input" placeholder="Search components and foundations…" autocomplete="off" aria-label="Search" />
+        <span class="cmdk-esc">Esc</span>
+      </div>
+      <div class="cmdk-results" id="cmdk-results"></div>
+    </div>
+  </div>
 
   <script>
     const DS = window.DS || { semanticGroups: [], primitiveScales: [] };
@@ -984,6 +1013,64 @@
     });
 
     // ---- search filter ----
+    // ---- command palette (⌘K) — jump to any component or foundation ----
+    const CMDK_ICONS = {
+      doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+      comp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>',
+      ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>',
+    };
+    const PALETTE = [
+      { group: "Foundations", label: "Colors", view: "colors", icon: "doc" },
+      { group: "Foundations", label: "Typography", view: "typography", icon: "doc" },
+      { group: "Foundations", label: "Spacing", view: "foundation", section: "Spacing", icon: "doc", hint: "Foundation" },
+      { group: "Foundations", label: "Shadows", view: "foundation", section: "Shadow", icon: "doc", hint: "Foundation" },
+      { group: "Components", label: "Button", view: "button", icon: "comp" },
+      { group: "Source", label: "Figma", view: "figma", icon: "ext" },
+      { group: "Source", label: "Notion", view: "notion", icon: "ext" },
+    ];
+    const cmdk = document.getElementById("cmdk");
+    const cmdkInput = document.getElementById("cmdk-input");
+    const cmdkResults = document.getElementById("cmdk-results");
+    let cmdkList = [], cmdkSel = 0;
+    function cmdkRender() {
+      const q = cmdkInput.value.trim().toLowerCase();
+      cmdkList = PALETTE.filter((i) => !q || i.label.toLowerCase().includes(q) || i.group.toLowerCase().includes(q));
+      cmdkSel = 0;
+      if (!cmdkList.length) { cmdkResults.innerHTML = '<div class="cmdk-empty">No matches</div>'; return; }
+      const groups = [];
+      cmdkList.forEach((it, idx) => { let g = groups.find((x) => x.name === it.group); if (!g) groups.push((g = { name: it.group, items: [] })); g.items.push({ it, idx }); });
+      cmdkResults.innerHTML = groups.map((g) =>
+        `<div class="cmdk-group">${g.name}</div>` + g.items.map(({ it, idx }) =>
+          `<div class="cmdk-item" data-idx="${idx}"><span class="cmdk-ico">${CMDK_ICONS[it.icon]}</span><span class="cmdk-label">${it.label}</span>${it.hint ? `<span class="cmdk-hint">${it.hint}</span>` : ""}</div>`
+        ).join("")
+      ).join("");
+      cmdkMark();
+    }
+    function cmdkMark() {
+      cmdkResults.querySelectorAll(".cmdk-item").forEach((el2) => { const on = +el2.dataset.idx === cmdkSel; el2.classList.toggle("sel", on); if (on) el2.scrollIntoView({ block: "nearest" }); });
+    }
+    function cmdkOpen() { cmdk.hidden = false; cmdkInput.value = ""; cmdkRender(); cmdkInput.focus(); }
+    function cmdkClose() { cmdk.hidden = true; }
+    function cmdkGo(it) {
+      if (!it) return;
+      cmdkClose();
+      showView(it.view);
+      if (it.section) setTimeout(() => {
+        const view = views[it.view];
+        const h = view && [...view.querySelectorAll("h2, h3")].find((n) => n.textContent.trim().toLowerCase().startsWith(it.section.toLowerCase()));
+        if (h) h.scrollIntoView({ block: "start" });
+      }, 0);
+    }
+    cmdkInput.addEventListener("input", cmdkRender);
+    cmdkResults.addEventListener("click", (e) => { const it = e.target.closest(".cmdk-item"); if (it) cmdkGo(cmdkList[+it.dataset.idx]); });
+    cmdk.addEventListener("click", (e) => { if (e.target === cmdk) cmdkClose(); });
+    cmdkInput.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); cmdkSel = Math.min(cmdkSel + 1, cmdkList.length - 1); cmdkMark(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); cmdkSel = Math.max(cmdkSel - 1, 0); cmdkMark(); }
+      else if (e.key === "Enter") { e.preventDefault(); cmdkGo(cmdkList[cmdkSel]); }
+      else if (e.key === "Escape") { e.preventDefault(); cmdkClose(); }
+    });
+
     const search = document.getElementById("search");
     search.addEventListener("input", () => {
       const q = search.value.trim().toLowerCase();
@@ -1009,7 +1096,7 @@
       document.getElementById("primitives").style.display = primAny ? "" : "none";
     });
     document.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); search.focus(); }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); cmdk.hidden ? cmdkOpen() : cmdkClose(); }
     });
 
     // ---- scrollspy: highlight the current color section (Colors stays active) ----
