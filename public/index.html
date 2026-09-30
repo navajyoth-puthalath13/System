@@ -391,6 +391,7 @@
     body.collapsed .toast { left: 50%; }
     /* command palette (⌘K) */
     .cmdk { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; background: rgba(0,0,0,.5); backdrop-filter: blur(3px); }
+    .cmdk[hidden] { display: none; }
     .cmdk-panel { width: min(720px, 92vw); background: var(--panel); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.5); overflow: hidden; }
     .cmdk-search { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--border); }
     .cmdk-search input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--fg); font: 400 16px var(--sans); }
