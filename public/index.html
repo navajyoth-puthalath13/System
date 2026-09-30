@@ -1021,14 +1021,14 @@
       comp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>',
       ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>',
     };
-    // Mirrors the sidebar, plus the components the registry ships.
+    // Mirrors the sidebar navigation one-to-one — same groups, labels, and order.
     const PALETTE = [
-      { group: "Components", label: "Button", view: "button", icon: "comp" },
+      { group: "Source", label: "Figma", view: "figma", icon: "ext" },
+      { group: "Source", label: "Notion", view: "notion", icon: "ext" },
       { group: "Documentation", label: "Colors", view: "colors", icon: "doc" },
       { group: "Documentation", label: "Typography", view: "typography", icon: "doc" },
       { group: "Documentation", label: "Foundation", view: "foundation", icon: "doc" },
-      { group: "Source", label: "Figma", view: "figma", icon: "ext" },
-      { group: "Source", label: "Notion", view: "notion", icon: "ext" },
+      { group: "Components / Atoms", label: "Button", view: "button", icon: "comp" },
     ];
     const cmdk = document.getElementById("cmdk");
     const cmdkInput = document.getElementById("cmdk-input");
