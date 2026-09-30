@@ -1,0 +1,48 @@
+---
+title: Usage
+category: principle
+status: stable
+description: How to consume the system correctly — the source-of-truth rules and layer boundaries.
+---
+
+# Usage
+
+How to build with the system so it stays consistent and maintainable.
+
+## Source-of-truth rules
+
+Each kind of knowledge has exactly one home:
+
+| Layer | Format | Holds |
+| --- | --- | --- |
+| **Tokens** | JSON (`tokens/`) | The values — colour, spacing, type, shadow, radius, icons. |
+| **Components** | TSX (`components/`) | The implementation. |
+| **Documentation** | MDX (`docs/`, `components/*/*.mdx`) | Meaning, rules, usage, examples. |
+| **Schemas** | JSON Schema (`schemas/`) | The shape machines should expect. |
+| **Registry** | JSON (`registry/`) | The map of where everything is and how it relates. |
+
+Rules that follow from this:
+
+- **Consume semantic tokens, never primitives** and never raw hex.
+- **JSON is the only source of token values.** MDX may *reference* a token name, but must not
+  restate its value — that would create a second, drifting source of truth.
+- **Generated files are never edited by hand** (`src/index.css`, `public/`, `dist/`,
+  `registry/`). Change the source and re-run the build.
+
+## Choosing a token
+
+- Pick by **role**, not by appearance.
+- Prefer the **lowest effective** value (least emphasis, least elevation, smallest step).
+- If nothing fits, **extend the semantic layer** — don't inline a one-off value.
+
+## Choosing a component
+
+- Reach for an existing component before building a new one.
+- If a variant is missing, add it to the component and its `schema.json`, not as a local override.
+
+## Regenerating
+
+```bash
+npm run tokens      # tokens/ -> src/index.css + showcase data
+npm run build       # full build: tokens, validation, registry
+```

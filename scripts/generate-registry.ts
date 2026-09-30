@@ -2,8 +2,8 @@
  * generate-registry.ts — build the shadcn-compatible registry.
  *
  * Sources:
- *   src/components/ui/*.tsx   -> registry:ui items
- *   src/hooks/*.ts            -> registry:hook items
+ *   components/<name>/<name>.tsx -> registry:ui items
+ *   src/hooks/*.ts               -> registry:hook items
  *   src/index.css             -> a registry:theme item ("tokens")
  *
  * For each source it reads a JSDoc header (@name, @description, @type,
@@ -137,7 +137,7 @@ function main() {
   const tokens = buildTokensItem();
   if (tokens) items.push(tokens);
 
-  for (const f of fg.sync("src/components/ui/*.tsx", { cwd: ROOT, absolute: true })) items.push(buildFromSource(f, "ui"));
+  for (const f of fg.sync("components/*/*.tsx", { cwd: ROOT, absolute: true })) items.push(buildFromSource(f, "ui"));
   for (const f of fg.sync("src/hooks/*.ts", { cwd: ROOT, absolute: true })) items.push(buildFromSource(f, "hook"));
 
   for (const item of items) {

@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "name": "Button",
+      "id": "button",
+      "category": "actions",
+      "implementation": "components/button/button.tsx",
+      "documentation": "components/button/button.mdx",
+      "schema": "components/button/schema.json",
+      "variants": [
+        "primary",
+        "secondary",
+        "neutral",
+        "tertiary"
+      ],
+      "sizes": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "pressed",
+        "disabled"
+      ],
+      "tokens": {
+        "action": [
+          "action.primary",
+          "action.primary-hover",
+          "action.primary-soft"
+        ],
+        "text": [
+          "text.primary",
+          "text.inverse",
+          "text.disabled"
+        ],
+        "background": [
+          "background.muted",
+          "background.light"
+        ],
+        "border": [
+          "border.strong"
+        ],
+        "shadow": [
+          "shadow-sm",
+          "shadow-xs",
+          "shadow-inner"
+        ],
+        "focus": [
+          "indigo-600"
+        ]
+      }
+    }
+  ]
+}

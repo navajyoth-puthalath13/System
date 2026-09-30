@@ -1,0 +1,41 @@
+{
+  "$schema": "../../schemas/component.schema.json",
+  "name": "Button",
+  "type": "component",
+  "category": "actions",
+  "description": "Performs an action or makes a decision.",
+  "variants": ["primary", "secondary", "neutral", "tertiary"],
+  "sizes": ["sm", "md", "lg"],
+  "states": ["default", "hover", "focus", "pressed", "disabled"],
+  "modes": ["default", "iconOnly"],
+  "tokens": {
+    "action": ["action.primary", "action.primary-hover", "action.primary-soft"],
+    "text": ["text.primary", "text.inverse", "text.disabled"],
+    "background": ["background.muted", "background.light"],
+    "border": ["border.strong"],
+    "shadow": ["shadow-sm", "shadow-xs", "shadow-inner"],
+    "focus": ["indigo-600"]
+  },
+  "accessibility": {
+    "element": "native <button>",
+    "focusRing": "indigo-600, 2px, 4px offset, via :focus-visible",
+    "iconOnly": "requires an accessible label (aria-label)",
+    "colorAlone": false
+  },
+  "localization": {},
+  "usage": {
+    "iconOnly": true,
+    "leadingIcon": true,
+    "trailingIcon": true,
+    "loading": false
+  },
+  "implementation": {
+    "file": "components/button/button.tsx",
+    "framework": "react",
+    "styling": "tailwind-v4 + class-variance-authority",
+    "dependencies": ["class-variance-authority"],
+    "registryDependencies": ["utils"]
+  },
+  "documentation": "components/button/button.mdx",
+  "relatedComponents": []
+}

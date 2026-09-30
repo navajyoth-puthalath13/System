@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://system-three-rouge.vercel.app/schemas/documentation.schema.json",
+  "title": "Documentation frontmatter",
+  "description": "The YAML frontmatter block every .mdx documentation file must start with. The prose below the frontmatter is explanation/knowledge — it is not a source of token values. Predictable frontmatter is what makes the docs machine-parseable for future RAG.",
+  "type": "object",
+  "required": ["title", "category", "description"],
+  "properties": {
+    "title": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["foundation", "component", "principle"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["stable", "draft", "deprecated"]
+    },
+    "description": { "type": "string", "description": "One-line summary used for search and cards." },
+    "source": { "type": "string", "description": "Path to the token source this doc explains (foundations only)." },
+    "component": { "type": "string", "description": "Component id (component docs only)." },
+    "implementation": { "type": "string" },
+    "schema": { "type": "string" }
+  },
+  "additionalProperties": true
+}

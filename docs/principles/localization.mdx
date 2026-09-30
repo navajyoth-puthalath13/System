@@ -1,0 +1,34 @@
+---
+title: Localization
+category: principle
+status: draft
+description: How the system stays adaptable to different languages, lengths, and reading directions.
+---
+
+# Localization
+
+The system is designed so that components adapt to translated content and different reading
+directions without rework.
+
+## Text length
+
+- Never assume a fixed label length. Components size to their content and wrap or truncate
+  predictably; do not hard-code widths that only fit English.
+- Spacing comes from the shared [spacing scale](../foundations/spacing.mdx), so padding
+  scales consistently when labels grow.
+
+## Direction (LTR / RTL)
+
+- Prefer logical CSS properties (`padding-inline`, `margin-inline`, `inset-inline`) over
+  physical ones so layouts mirror correctly in right-to-left locales.
+- Directional icons (arrows, chevrons) should flip with direction; decorative icons should not.
+
+## Numerals, dates, currency
+
+- Formatting is the consuming application's responsibility — the system provides the
+  typographic scale, not locale-specific formatters.
+
+## Status
+
+This principle is a **draft**: the current component set is small, and RTL/logical-property
+coverage will be verified as components are added.

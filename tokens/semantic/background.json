@@ -1,0 +1,41 @@
+{
+  "$comment": "Semantic background/surface roles.",
+  "background": [
+    {
+      "name": "default",
+      "ref": "white",
+      "dark": "gray.950",
+      "purpose": "Default surface."
+    },
+    {
+      "name": "muted",
+      "ref": "gray.50",
+      "dark": "gray.900",
+      "purpose": "Very subtle surface."
+    },
+    {
+      "name": "light",
+      "ref": "gray.100",
+      "dark": "gray.900",
+      "purpose": "Light surface."
+    },
+    {
+      "name": "subtle",
+      "ref": "gray.200",
+      "dark": "gray.800",
+      "purpose": "Subtle surface."
+    },
+    {
+      "name": "strong",
+      "ref": "gray.800",
+      "dark": "gray.200",
+      "purpose": "Strong dark surface."
+    },
+    {
+      "name": "inverse",
+      "ref": "gray.950",
+      "dark": "gray.50",
+      "purpose": "Dark / inverse surface."
+    }
+  ]
+}
