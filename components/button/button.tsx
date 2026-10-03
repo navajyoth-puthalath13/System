@@ -24,7 +24,7 @@ const buttonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap select-none",
     "font-medium rounded-[8px] border border-solid transition-[color,background-color,border-color] duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] touch-manipulation [-webkit-tap-highlight-color:transparent]",
-    "outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--indigo-600)]",
+    "outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-[var(--indigo-600)]",
     "active:shadow-[var(--shadow-inner)] dark:active:shadow-[inset_0_2px_12px_rgba(0,0,0,0.55)] disabled:pointer-events-none disabled:shadow-none",
   ],
   {
