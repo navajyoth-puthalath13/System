@@ -9,9 +9,11 @@ import { cn } from "@/lib/utils";
  * @dependencies utils
  *
  * Focus ring: indigo-600, 2px, 4px offset. States: default / hover / focus / pressed / disabled (no loading).
- * Depth: at rest the button is raised (shadow-sm on Primary, shadow-xs elsewhere). On
- * press, active:shadow-[--shadow-inner] REPLACES the outer shadow (same box-shadow
- * property) so the button drops to the surface and recesses in — that swap is the "depth".
+ * Depth: at rest Primary is raised (shadow-sm), Secondary/Neutral sit on shadow-xs, and
+ * Tertiary is flat (no resting shadow) — it reads as a muted surface and its hover feedback
+ * is a border-default (gray-200) stroke, not a darker fill. On press,
+ * active:shadow-[--shadow-inner] REPLACES the outer shadow (same box-shadow property) so the
+ * button drops to the surface and recesses in — that swap is the "depth".
  * In dark mode the gray-950 inset vanishes on dark fills, so press uses a stronger black
  * inset (dark:active:shadow-…) to keep the recess readable across every variant.
  * Primary also reverts its fill/border from action.primary-hover back to action.primary
@@ -35,7 +37,7 @@ const buttonVariants = cva(
         neutral:
           "shadow-xs bg-transparent border-border-strong text-text-primary hover:bg-background-light disabled:border-text-disabled disabled:text-text-disabled",
         tertiary:
-          "shadow-xs bg-background-muted border-transparent text-text-primary hover:bg-background-light hover:border-background-light disabled:text-text-disabled",
+          "bg-background-muted border-transparent text-text-primary hover:border-border-default disabled:text-text-disabled",
       },
       size: {
         sm: "h-8 px-3 text-[14px] leading-[16px] gap-1.5 [&_svg]:size-4",
