@@ -137,7 +137,9 @@ function main() {
   const tokens = buildTokensItem();
   if (tokens) items.push(tokens);
 
-  for (const f of fg.sync("components/*/*.tsx", { cwd: ROOT, absolute: true })) items.push(buildFromSource(f, "ui"));
+  // Only real component implementations — never Storybook stories or tests that
+  // may live alongside them in the component folder.
+  for (const f of fg.sync("components/*/*.tsx", { cwd: ROOT, absolute: true, ignore: ["**/*.stories.*", "**/*.test.*", "**/*.spec.*"] })) items.push(buildFromSource(f, "ui"));
   for (const f of fg.sync("src/hooks/*.ts", { cwd: ROOT, absolute: true })) items.push(buildFromSource(f, "hook"));
 
   for (const item of items) {
