@@ -12,7 +12,10 @@ const config: StorybookConfig = {
   // Only *.stories.* are collected. The existing component docs (button.mdx)
   // are intentionally NOT ingested — they remain part of the design-system
   // documentation architecture, not Storybook.
-  stories: ["../components/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
+  stories: [
+    "../components/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../foundations/**/*.stories.@(js|jsx|ts|tsx|mdx)", // Tokens/* galleries
+  ],
   addons: [
     "@storybook/addon-docs", // autodocs for component APIs
     "@storybook/addon-a11y", // accessibility inspection
