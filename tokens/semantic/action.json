@@ -3,14 +3,14 @@
   "action": [
     {
       "name": "primary",
-      "ref": "sky.600",
-      "dark": "sky.500",
-      "purpose": "Main CTA / action (default state)."
+      "ref": "sky.700",
+      "dark": "sky.600",
+      "purpose": "Main CTA / action (default state). sky-700 so white text meets WCAG AA (5.86:1)."
     },
     {
       "name": "primary-hover",
-      "ref": "sky.700",
-      "dark": "sky.600",
+      "ref": "sky.800",
+      "dark": "sky.700",
       "purpose": "Hover feedback. Dark mode resolves darker than Primary so hover doesn't lighten."
     },
     {

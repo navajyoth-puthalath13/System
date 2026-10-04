@@ -208,8 +208,8 @@
   --border-positive: var(--green-200);
   --border-positive-strong: var(--green-300);
   /* action */
-  --action-primary: var(--sky-600);
-  --action-primary-hover: var(--sky-700);
+  --action-primary: var(--sky-700);
+  --action-primary-hover: var(--sky-800);
   --action-primary-clicked: var(--sky-800);
   --action-primary-soft: var(--sky-100);
   /* information */
@@ -273,8 +273,8 @@
   --border-positive: var(--green-800);
   --border-positive-strong: var(--green-700);
   /* action */
-  --action-primary: var(--sky-500);
-  --action-primary-hover: var(--sky-600);
+  --action-primary: var(--sky-600);
+  --action-primary-hover: var(--sky-700);
   --action-primary-clicked: var(--sky-300);
   --action-primary-soft: var(--sky-950);
   /* information */
