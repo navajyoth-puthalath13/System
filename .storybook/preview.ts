@@ -18,6 +18,16 @@ const preview: Preview = {
     // own backgrounds, so they stay out of the way.
     backgrounds: { disable: true },
     layout: "centered",
+    // Sidebar order: Tokens (documentation) first, then Components.
+    options: {
+      storySort: {
+        order: [
+          "Tokens",
+          ["Colors", "Typography", "Spacing", "Elevation", "Border"],
+          "Components",
+        ],
+      },
+    },
   },
 
   // Reuse the existing light/dark behavior: the `.dark` class flips the token

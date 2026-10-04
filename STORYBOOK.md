@@ -22,10 +22,12 @@ npm run build-storybook    # static production build → storybook-static/
 ## How it reuses the design system
 
 - **Components** — stories import `components/button/button.tsx` directly.
-- **Tokens galleries** — `foundations/*.stories.tsx` render a **Tokens/** section (Colors,
-  Typography, Spacing, Elevation, Border) from the token JSON (`tokens/`) using the live CSS
-  variables, so they stay in sync with the source of truth and react to the theme toolbar.
-  They document tokens only; they do not redefine any.
+- **Tokens docs** — `foundations/*.mdx` render a **Tokens/** section (Colors, Typography,
+  Spacing, Elevation, Border) as **documentation pages** (not stories), each pulling its
+  gallery from `foundations/galleries.tsx`, which reads the token JSON (`tokens/`) and renders
+  with the live CSS variables — in sync with the source of truth and theme-aware. They
+  document tokens only; they do not redefine any. The sidebar lists **Tokens first, then
+  Components** (`options.storySort` in `.storybook/preview.ts`).
 - **Tokens / CSS / Tailwind** — `.storybook/preview.ts` imports `src/index.css` (the single
   source of truth: `@import "tailwindcss"` + every primitive and semantic token). Vite picks
   up the existing `postcss.config.mjs` automatically, so the token-backed utilities
