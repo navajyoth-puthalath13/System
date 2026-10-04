@@ -1,5 +1,4 @@
 import type { Preview } from "@storybook/react-vite";
-import { INITIAL_VIEWPORTS } from "storybook/viewport";
 import React from "react";
 
 // The existing design-system stylesheet: Tailwind v4 + all primitive and
@@ -18,19 +17,7 @@ const preview: Preview = {
     // We theme with the design-system tokens (decorator below), not Storybook's
     // own backgrounds, so they stay out of the way.
     backgrounds: { disable: true },
-    // Responsive viewport switcher (Small mobile / Tablet / Desktop / …) in the toolbar.
-    viewport: { options: INITIAL_VIEWPORTS },
     layout: "centered",
-    // Sidebar order: Tokens (documentation) first, then Components.
-    options: {
-      storySort: {
-        order: [
-          "Tokens",
-          ["Colors", "Typography", "Spacing", "Elevation", "Border"],
-          "Components",
-        ],
-      },
-    },
   },
 
   // Reuse the existing light/dark behavior: the `.dark` class flips the token
