@@ -14,7 +14,7 @@ const config: StorybookConfig = {
   // documentation architecture, not Storybook.
   stories: [
     "../components/**/*.stories.@(js|jsx|ts|tsx|mdx)",
-    "../foundations/**/*.stories.@(js|jsx|ts|tsx|mdx)", // Tokens/* galleries
+    "../foundations/**/*.mdx", // Tokens/* documentation pages
   ],
   addons: [
     "@storybook/addon-docs", // autodocs for component APIs
