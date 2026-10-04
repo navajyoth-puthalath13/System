@@ -6,7 +6,7 @@
 
 [![Documentation](https://img.shields.io/badge/Documentation-system--three--rouge.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://system-three-rouge.vercel.app)
 &nbsp;[![Registry](https://img.shields.io/badge/Registry-111827?style=flat-square)](https://system-three-rouge.vercel.app)
-&nbsp;[![Storybook](https://img.shields.io/badge/Storybook-Chromatic-FF4785?style=flat-square&logo=storybook&logoColor=white)](https://main--6ac2268a62d446221f928f49.chromatic.com)
+&nbsp;[![Storybook](https://img.shields.io/badge/Storybook-Chromatic-FF4785?style=flat-square&logo=storybook&logoColor=white)](https://6ac2268a62d446221f928f49-brslivyokq.chromatic.com/?path=/docs/tokens-colors--docs)
 &nbsp;[![License](https://img.shields.io/badge/License-MIT-16A34A?style=flat-square)](LICENSE)
 
 </div>
@@ -21,7 +21,7 @@ production, and re-theming means re-pointing tokens, not editing components.
 ## 🔗 Links
 
 - **[Documentation](https://system-three-rouge.vercel.app)** — the live, browsable showcase
-- **[Storybook](https://main--6ac2268a62d446221f928f49.chromatic.com)** — interactive component & token workshop (on Chromatic)
+- **[Storybook](https://6ac2268a62d446221f928f49-brslivyokq.chromatic.com/?path=/docs/tokens-colors--docs)** — interactive component & token workshop (on Chromatic)
 - **[Installation](#installation)** — add it to a React + Tailwind app
 - **[Specs](docs/)** — written docs, per foundation and component
 
@@ -77,7 +77,7 @@ npm run chromatic -- --project-token=<token>   # publish to Chromatic
 ```
 
 The sidebar lists **Tokens** (Colors, Typography, Spacing, Elevation, Border as documentation
-pages) first, then **Components** (Button). It's hosted on **[Chromatic](https://main--6ac2268a62d446221f928f49.chromatic.com)**,
+pages) first, then **Components** (Button). It's hosted on **[Chromatic](https://6ac2268a62d446221f928f49-brslivyokq.chromatic.com/?path=/docs/tokens-colors--docs)**,
 a separate deploy from the Vercel-hosted registry — two sites, one repository. See
 [`STORYBOOK.md`](STORYBOOK.md) for configuration and deployment details.
 
