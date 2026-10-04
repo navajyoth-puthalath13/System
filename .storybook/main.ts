@@ -16,6 +16,11 @@ const config: StorybookConfig = {
     "../components/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../foundations/**/*.stories.@(js|jsx|ts|tsx|mdx)", // Tokens/* galleries
   ],
+  // Do NOT serve ../public (the registry showcase). Its index.html would shadow
+  // Storybook's own index.html, so the published Storybook would render the
+  // showcase instead. Storybook imports everything it needs (src/index.css,
+  // token JSON, the logo) directly, so no static dir is required.
+  staticDirs: [],
   addons: [
     "@storybook/addon-docs", // autodocs for component APIs
     "@storybook/addon-a11y", // accessibility inspection
@@ -35,6 +40,9 @@ const config: StorybookConfig = {
           "@": fileURLToPath(new URL("../src", import.meta.url)),
         },
       },
+      // Vite's publicDir defaults to ./public (the registry showcase). Disable it
+      // so public/index.html doesn't overwrite Storybook's own index.html.
+      publicDir: false,
     }),
 };
 
