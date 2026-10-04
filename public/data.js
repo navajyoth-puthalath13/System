@@ -266,17 +266,17 @@ window.DS = {
         {
           "name": "primary",
           "var": "action-primary",
-          "refVar": "sky-600",
-          "hex": "#0084D1",
-          "dark": "#00A6F4",
-          "purpose": "Main CTA / action (default state)."
+          "refVar": "sky-700",
+          "hex": "#0069A8",
+          "dark": "#0084D1",
+          "purpose": "Main CTA / action (default state). sky-700 so white text meets WCAG AA (5.86:1)."
         },
         {
           "name": "primary-hover",
           "var": "action-primary-hover",
-          "refVar": "sky-700",
-          "hex": "#0069A8",
-          "dark": "#0084D1",
+          "refVar": "sky-800",
+          "hex": "#00598A",
+          "dark": "#0069A8",
           "purpose": "Hover feedback. Dark mode resolves darker than Primary so hover doesn't lighten."
         },
         {
