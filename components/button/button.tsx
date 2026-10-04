@@ -59,41 +59,14 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-/** Does this node tree contain any visible text (a non-empty string or a number)? */
-function hasTextContent(node: React.ReactNode): boolean {
-  if (node == null || typeof node === "boolean") return false;
-  if (typeof node === "string") return node.trim().length > 0;
-  if (typeof node === "number") return true;
-  if (Array.isArray(node)) return node.some(hasTextContent);
-  if (React.isValidElement(node)) return hasTextContent((node.props as { children?: React.ReactNode }).children);
-  return false;
-}
-
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, iconOnly, ...props }, ref) => {
-    // Dev-only guard: every button needs an accessible name. Icon-only or empty
-    // buttons must supply aria-label / aria-labelledby / title — otherwise the
-    // button is announced as nothing (axe: button-name).
-    if (process.env.NODE_ENV !== "production") {
-      const labelled =
-        props["aria-label"] != null ||
-        props["aria-labelledby"] != null ||
-        props.title != null;
-      if (!labelled && !hasTextContent(props.children)) {
-        console.warn(
-          "Button: no accessible name. Provide text children, or pass `aria-label` " +
-            "(or `aria-labelledby` / `title`) for an icon-only button."
-        );
-      }
-    }
-    return (
-      <button
-        ref={ref}
-        className={cn(buttonVariants({ variant, size, iconOnly }), className)}
-        {...props}
-      />
-    );
-  }
+  ({ className, variant, size, iconOnly, ...props }, ref) => (
+    <button
+      ref={ref}
+      className={cn(buttonVariants({ variant, size, iconOnly }), className)}
+      {...props}
+    />
+  )
 );
 Button.displayName = "Button";
 
