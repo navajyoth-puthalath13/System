@@ -16,7 +16,9 @@
     "build": "npm run validate && npm run docs && npm run registry && npm run registry:shadcn",
     "serve": "node scripts/serve.mjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic",
+    "chromatic": "npx chromatic --project-token=chpt_c94833168fc77bb"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
