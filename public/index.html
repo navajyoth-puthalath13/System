@@ -746,8 +746,11 @@
     nav.appendChild(el(`<div class="grp">Source</div>`));
     const figmaLink = el(`<a href="#figma">Figma</a>`);
     nav.appendChild(figmaLink);
-    const notionLink = el(`<a href="#notion">Notion</a>`);
-    nav.appendChild(notionLink);
+    // External references open in a new tab. Notion can't be embedded, and
+    // Storybook + GitHub live elsewhere, so these link straight out.
+    nav.appendChild(el(`<a href="https://fine-wholesaler-22e.notion.site/design-system-3d209d893fa2802eac00e7debe0278eb" target="_blank" rel="noopener">Notion ↗</a>`));
+    nav.appendChild(el(`<a href="https://6ac2268a62d446221f928f49-brslivyokq.chromatic.com/?path=/docs/tokens-colors--docs" target="_blank" rel="noopener">Storybook ↗</a>`));
+    nav.appendChild(el(`<a href="https://github.com/navajyoth-puthalath13/System" target="_blank" rel="noopener">GitHub ↗</a>`));
 
     // ---- Documentation group ----
     nav.appendChild(el(`<div class="grp">Documentation</div>`));
@@ -759,8 +762,8 @@
     nav.appendChild(foundationLink);
 
     // ---- view switching (Colors / Typography / Foundation / Figma tabs) ----
-    const views = { colors: document.getElementById("view-colors"), typography: document.getElementById("view-typography"), foundation: document.getElementById("view-foundation"), figma: document.getElementById("view-source"), notion: document.getElementById("view-notion") };
-    const vlinks = { colors: colorsLink, typography: typeLink, foundation: foundationLink, figma: figmaLink, notion: notionLink };
+    const views = { colors: document.getElementById("view-colors"), typography: document.getElementById("view-typography"), foundation: document.getElementById("view-foundation"), figma: document.getElementById("view-source") };
+    const vlinks = { colors: colorsLink, typography: typeLink, foundation: foundationLink, figma: figmaLink };
     function showView(name) {
       if (!views[name]) name = "colors";
       for (const k in views) views[k].hidden = k !== name;
@@ -772,7 +775,6 @@
     typeLink.addEventListener("click", (e) => { e.preventDefault(); showView("typography"); });
     foundationLink.addEventListener("click", (e) => { e.preventDefault(); showView("foundation"); });
     figmaLink.addEventListener("click", (e) => { e.preventDefault(); showView("figma"); });
-    notionLink.addEventListener("click", (e) => { e.preventDefault(); showView("notion"); });
     window.addEventListener("hashchange", () => showView(location.hash.slice(1) || "colors"));
     // previous / next page nav (footer of each documentation page)
     document.addEventListener("click", (e) => {
@@ -1025,7 +1027,9 @@
     // Mirrors the sidebar navigation one-to-one — same groups, labels, and order.
     const PALETTE = [
       { group: "Source", label: "Figma", view: "figma", icon: "ext" },
-      { group: "Source", label: "Notion", view: "notion", icon: "ext" },
+      { group: "Source", label: "Notion", url: "https://fine-wholesaler-22e.notion.site/design-system-3d209d893fa2802eac00e7debe0278eb", icon: "ext" },
+      { group: "Source", label: "Storybook", url: "https://6ac2268a62d446221f928f49-brslivyokq.chromatic.com/?path=/docs/tokens-colors--docs", icon: "ext" },
+      { group: "Source", label: "GitHub", url: "https://github.com/navajyoth-puthalath13/System", icon: "ext" },
       { group: "Documentation", label: "Colors", view: "colors", icon: "doc" },
       { group: "Documentation", label: "Typography", view: "typography", icon: "doc" },
       { group: "Documentation", label: "Foundation", view: "foundation", icon: "doc" },
@@ -1057,6 +1061,7 @@
     function cmdkGo(it) {
       if (!it) return;
       cmdkClose();
+      if (it.url) { window.open(it.url, "_blank", "noopener"); return; }
       showView(it.view);
       if (it.section) setTimeout(() => {
         const view = views[it.view];
